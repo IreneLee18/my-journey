@@ -134,6 +134,10 @@ export function PaginationGroup({
         <PaginationContent>
           {/* <PaginationItem> */}
           <PaginationPrevious
+            onClick={(e) => {
+              e.preventDefault();
+              void handlePageChange(Math.max(1, currentPage - 1));
+            }}
             aria-disabled={isDisabled || currentPage === 1}
             className={disabledStyles}
           />
@@ -148,6 +152,10 @@ export function PaginationGroup({
               <PaginationItem key={pageNumber.toString()}>
                 <PaginationLink
                   key={pageNumber.toString()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    void handlePageChange(pageNumber);
+                  }}
                   isActive={currentPage === pageNumber}
                   className={disabledStyles}
                 >
@@ -159,6 +167,10 @@ export function PaginationGroup({
 
           <PaginationItem>
             <PaginationNext
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                e.preventDefault();
+                void handlePageChange(Math.min(totalPages, currentPage + 1));
+              }}
               aria-disabled={isDisabled || currentPage === totalPages}
               className={disabledStyles}
             />
