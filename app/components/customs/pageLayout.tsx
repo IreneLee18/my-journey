@@ -18,7 +18,7 @@ export function PageLayout({
   goBack,
 }: PageLayoutProps) {
   return (
-    <div className={cn('container flex-1 flex flex-col gap-4', className)}>
+    <div className="container flex-1 flex flex-col gap-4">
       <div className="flex items-center justify-between border-b border-gray-200 pb-4">
         <h1
           className={cn(
@@ -29,13 +29,17 @@ export function PageLayout({
           {title}
         </h1>
         {goBack && goBackString && (
-          <Button variant="outline" className="flex items-center gap-2" onClick={goBack}>
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={goBack}
+          >
             <ChevronLeft />
             {goBackString}
           </Button>
         )}
       </div>
-      {children}
+      <div className={className}>{children}</div>
     </div>
   );
 }
