@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
-import { Sun, User } from 'lucide-react';
+import { Sun, User, Moon } from 'lucide-react';
+import { useTheme } from '@/hooks/useTheme';
 
 interface MobileNavigationProps {
   isMobileMenuOpen: boolean;
@@ -12,6 +13,8 @@ export default function MobileNavigation({
   isMobileMenuOpen,
   closeMobileMenu,
 }: MobileNavigationProps) {
+  const { theme, toggleTheme } = useTheme();
+
   const mobileMenuVariants = {
     hidden: {
       opacity: 0,
@@ -49,7 +52,7 @@ export default function MobileNavigation({
     <AnimatePresence>
       {isMobileMenuOpen && (
         <motion.nav
-          className="md:hidden flex flex-col gap-4 overflow-hidden absolute w-full left-0 px-4 border-t top-[68px] h-screen bg-white border-gray-200 border-b"
+          className="md:hidden flex flex-col gap-4 overflow-hidden absolute w-full left-0 px-4 border-t top-[68px] h-screen bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 border-b"
           initial="hidden"
           animate="visible"
           exit="hidden"
@@ -58,7 +61,7 @@ export default function MobileNavigation({
           <motion.div variants={mobileLinkVariants} className="pt-4">
             <Link
               to="/posts"
-              className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2 block"
+              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 font-medium transition-colors py-2 block"
               onClick={closeMobileMenu}
             >
               Posts
@@ -67,7 +70,7 @@ export default function MobileNavigation({
           <motion.div variants={mobileLinkVariants}>
             <Link
               to="/about"
-              className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2 block"
+              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 font-medium transition-colors py-2 block"
               onClick={closeMobileMenu}
             >
               About
@@ -77,8 +80,13 @@ export default function MobileNavigation({
             variants={mobileLinkVariants}
             className="flex items-center gap-4 pt-2 border-t border-gray-200 pb-4"
           >
-            <Button size="icon" variant="iconGhost" aria-label="Toggle theme">
-              <Sun />
+            <Button
+              size="icon"
+              variant="iconGhost"
+              aria-label="Toggle theme"
+              onClick={toggleTheme}
+            >
+              {theme === 'dark' ? <Moon /> : <Sun />}
             </Button>
             <Button size="icon" variant="iconGhost" aria-label="Login">
               <User />

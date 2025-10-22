@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, User, Menu, X } from 'lucide-react';
+import { Sun, User, Menu, X, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router';
 import DesktopNavigation from './navigation/desktop';
 import MobileNavigation from './navigation/mobile';
+import { useTheme } from '@/hooks/useTheme';
 
 export function Header() {
+  const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -20,7 +22,7 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white border-gray-200 border-b sticky top-0 z-50 transition-colors duration-300">
+    <header className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 border-b sticky top-0 z-50 transition-colors duration-300">
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           <div className="text-xl md:text-2xl font-bold">
@@ -41,8 +43,9 @@ export function Header() {
               variant="iconGhost"
               aria-label="Toggle theme"
               className="hidden md:flex"
+              onClick={toggleTheme}
             >
-              <Sun />
+              {theme === 'dark' ? <Moon /> : <Sun />}
             </Button>
             <Button
               size="icon"
