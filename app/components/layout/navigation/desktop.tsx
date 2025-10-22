@@ -4,10 +4,10 @@ export default function DesktopNavigation() {
   return (
     <nav className="hidden md:flex gap-8">
       <Link
-        to="/post"
+        to="/posts"
         className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
       >
-        Post
+        Posts
       </Link>
       <Link
         to="/about"

@@ -38,7 +38,7 @@ export function Header() {
           <div className="flex items-center gap-2 md:gap-4">
             <Button
               size="icon"
-              variant="ghost"
+              variant="iconGhost"
               aria-label="Toggle theme"
               className="hidden md:flex"
             >
@@ -46,7 +46,7 @@ export function Header() {
             </Button>
             <Button
               size="icon"
-              variant="ghost"
+              variant="iconGhost"
               aria-label="Login"
               className="hidden md:flex"
             >
@@ -57,7 +57,7 @@ export function Header() {
             <div className="md:hidden">
               <Button
                 size="icon"
-                variant="ghost"
+                variant="iconGhost"
                 aria-label="Toggle menu"
                 onClick={toggleMobileMenu}
               >

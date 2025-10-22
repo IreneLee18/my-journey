@@ -57,11 +57,11 @@ export default function MobileNavigation({
         >
           <motion.div variants={mobileLinkVariants} className="pt-4">
             <Link
-              to="/post"
+              to="/posts"
               className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2 block"
               onClick={closeMobileMenu}
             >
-              Post
+              Posts
             </Link>
           </motion.div>
           <motion.div variants={mobileLinkVariants}>
@@ -77,10 +77,10 @@ export default function MobileNavigation({
             variants={mobileLinkVariants}
             className="flex items-center gap-4 pt-2 border-t border-gray-200 pb-4"
           >
-            <Button size="icon" variant="ghost" aria-label="Toggle theme">
+            <Button size="icon" variant="iconGhost" aria-label="Toggle theme">
               <Sun />
             </Button>
-            <Button size="icon" variant="ghost" aria-label="Login">
+            <Button size="icon" variant="iconGhost" aria-label="Login">
               <User />
             </Button>
           </motion.div>
