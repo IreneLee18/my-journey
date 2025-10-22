@@ -27,8 +27,6 @@ interface PaginationGroupProps {
   pageSizeOptions?: number[];
   /** 是否顯示每頁條數選擇器 */
   showSizeChanger?: boolean;
-  /** 是否顯示快速跳轉 */
-  showQuickJumper?: boolean;
   /** 用於記錄分頁狀態的 key */
   stateKey?: string;
 }
@@ -43,7 +41,6 @@ export function PaginationGroup({
   loading = false,
   pageSizeOptions = [12, 24, 48, 96],
   showSizeChanger = false,
-  showQuickJumper = false,
 }: PaginationGroupProps) {
   // 計算總頁數
   const totalPages = Math.ceil(total / pageSize);
@@ -129,7 +126,7 @@ export function PaginationGroup({
   const loadingStyles = loading ? 'animate-pulse' : '';
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex md:items-center items-end md:flex-row flex-col gap-4">
       <Pagination className={loadingStyles}>
         <PaginationContent>
           {/* <PaginationItem> */}
@@ -195,28 +192,6 @@ export function PaginationGroup({
             );
           })}
         </select>
-      )}
-
-      {showQuickJumper && (
-        <div className="flex items-center gap-2">
-          <span>跳至</span>
-          <input
-            type="number"
-            min={1}
-            max={totalPages}
-            className="border-input bg-background h-9 w-16 rounded-md border px-3"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                const value = Number((e.target as HTMLInputElement).value);
-                if (value >= 1 && value <= totalPages) {
-                  void handlePageChange(value);
-                }
-              }
-            }}
-            disabled={isDisabled}
-          />
-          <span>頁</span>
-        </div>
       )}
     </div>
   );
