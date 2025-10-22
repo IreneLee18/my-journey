@@ -28,7 +28,7 @@ export default function Homepage() {
   };
 
   return (
-    <main className="flex-1 flex items-center justify-center px-4">
+    <div className="container flex-1 flex items-center justify-center">
       <div className="text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           <motion.span
@@ -52,6 +52,6 @@ export default function Homepage() {
           </motion.span>
         </h1>
       </div>
-    </main>
+    </div>
   );
 }
