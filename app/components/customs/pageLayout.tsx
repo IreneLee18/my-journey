@@ -22,20 +22,31 @@ export function PageLayout({
       <div className="flex items-center justify-between border-b border-gray-200 pb-4">
         <h1
           className={cn(
-            'text-4xl font-bold',
+            'lg:text-4xl md:text-2xl text-lg font-bold',
             !goBack && !goBackString && 'w-full'
           )}
         >
           {title}
         </h1>
+
         {goBack && goBackString && (
           <Button
             variant="outline"
-            className="flex items-center gap-2"
+            className="items-center gap-2 hidden md:flex"
             onClick={goBack}
           >
             <ChevronLeft />
             {goBackString}
+          </Button>
+        )}
+        {goBack && goBackString && (
+          <Button
+            variant="iconGhost"
+            size="icon"
+            className="flex items-center gap-2 md:hidden"
+            onClick={goBack}
+          >
+            <ChevronLeft />
           </Button>
         )}
       </div>
