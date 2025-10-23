@@ -9,8 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import { Header } from "./components/layout/header";
-import { Footer } from "./components/layout/footer";
+import { GlobalStatusDialog } from "./components/customs/statusDialog";
 
 
 export const links: Route.LinksFunction = () => [
@@ -45,7 +44,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+      <GlobalStatusDialog />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
