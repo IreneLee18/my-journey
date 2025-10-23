@@ -8,6 +8,6 @@ export const paths = {
 
 export const adminPaths = {
   posts: { url: '/admin/posts', name: 'Posts' },
-  post: { url: '/admin/posts', name: 'Post' },
+  postCreate: { url: '/admin/post/create', name: 'New Post' },
+  postEdit: { url: '/admin/post/edit', name: 'Edit Post' },
 };
-
