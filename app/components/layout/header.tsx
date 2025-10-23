@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, User, Menu, X, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import DesktopNavigation from './navigation/desktop';
 import MobileNavigation from './navigation/mobile';
 import { useTheme } from '@/hooks/useTheme';
@@ -10,6 +10,7 @@ import { useTheme } from '@/hooks/useTheme';
 export function Header() {
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     return setIsMobileMenuOpen((prev) => {
@@ -52,6 +53,7 @@ export function Header() {
               variant="iconGhost"
               aria-label="Login"
               className="hidden md:flex"
+              onClick={() => navigate('/login')}
             >
               <User />
             </Button>

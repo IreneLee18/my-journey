@@ -12,4 +12,5 @@ export default [
     route('posts', 'routes/posts.tsx'),
     route('posts/:id', 'routes/post.tsx'),
   ]),
+  route('login', 'routes/login.tsx'),
 ] satisfies RouteConfig;

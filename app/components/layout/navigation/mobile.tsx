@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Sun, User, Moon } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
@@ -14,6 +14,7 @@ export default function MobileNavigation({
   closeMobileMenu,
 }: MobileNavigationProps) {
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   const mobileMenuVariants = {
     hidden: {
@@ -88,7 +89,12 @@ export default function MobileNavigation({
             >
               {theme === 'dark' ? <Moon /> : <Sun />}
             </Button>
-            <Button size="icon" variant="iconGhost" aria-label="Login">
+            <Button
+              size="icon"
+              variant="iconGhost"
+              aria-label="Login"
+              onClick={() => navigate('/login')}
+            >
               <User />
             </Button>
           </motion.div>
