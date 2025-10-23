@@ -8,7 +8,8 @@ type PageLayoutProps = {
   className?: string;
   goBackString?: string;
   goBack?: () => void;
-}
+  customActions?: React.ReactNode;
+};
 
 export function PageLayout({
   title,
@@ -16,6 +17,7 @@ export function PageLayout({
   className,
   goBackString,
   goBack,
+  customActions,
 }: PageLayoutProps) {
   return (
     <div className="container flex-1 flex flex-col gap-4">
@@ -49,6 +51,7 @@ export function PageLayout({
             <ChevronLeft />
           </Button>
         )}
+        {customActions}
       </div>
       <div className={className}>{children}</div>
     </div>
