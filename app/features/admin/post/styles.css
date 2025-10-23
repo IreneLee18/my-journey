@@ -1,0 +1,51 @@
+/* Custom Quill Container Styles */
+.ql-container {
+  min-height: calc(100% - 36px);
+  max-height: calc(100% - 36px);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-family: inherit;
+}
+
+.ql-editor {
+  font-size: 1rem;
+  line-height: 1.75;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+}
+
+.ql-snow.ql-toolbar {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Ensure proper spacing for Quill toolbar buttons */
+.ql-snow.ql-toolbar button {
+  margin: 0 2px;
+}
+
+.ql-snow.ql-toolbar button:hover,
+.ql-snow .ql-picker-label:hover {
+  color: #3b82f6;
+}
+
+.dark .ql-snow.ql-toolbar button:hover,
+.dark .ql-snow .ql-picker-label:hover {
+  color: #60a5fa;
+}
+
+.ql-snow.ql-toolbar button.ql-active,
+.ql-snow .ql-picker-label.ql-active {
+  color: #3b82f6;
+}
+
+.dark .ql-snow.ql-toolbar button.ql-active,
+.dark .ql-snow .ql-picker-label.ql-active {
+  color: #60a5fa;
+}
