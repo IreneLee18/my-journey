@@ -1,7 +1,7 @@
 import type { NavItemProps } from '@/constants/menu';
 import { Link, useLocation } from 'react-router';
 
-interface NavItemComponentProps {
+type NavItemComponentProps = {
   navItem: NavItemProps;
   onClick?: () => void;
 }

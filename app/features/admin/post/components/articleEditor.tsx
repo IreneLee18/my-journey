@@ -3,7 +3,7 @@ import type ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import '../styles.css';
 
-interface ArticleEditorProps {
+type ArticleEditorProps = {
   value: string;
   onChange: (value: string) => void;
 }

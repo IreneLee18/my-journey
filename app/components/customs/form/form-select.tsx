@@ -11,12 +11,12 @@ import {
 import { cn } from '@/lib/utils';
 import { FormErrorMessage, FormRequiredLabel } from './components';
 
-interface SelectOption {
+type SelectOption = {
   label: string;
   value: string;
 }
 
-interface FormSelectProps<T extends FieldValues> {
+type FormSelectProps<T extends FieldValues> = {
   options: SelectOption[];
   name: Path<T>;
   label: string;

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 
-interface ImagesCarouselProps {
+type ImagesCarouselProps = {
   images: string[];
 }
 

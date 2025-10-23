@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormInput, FormCheckbox } from '@/components/customs/form';
 import { useTheme } from '@/hooks/useTheme';
 
-interface LoginFormValues {
+type LoginFormValues = {
   email: string;
   password: string;
   rememberMe: boolean;

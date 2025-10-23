@@ -7,19 +7,19 @@ import { MobileContent } from './components/contents/mobile';
 import { DesktopContent } from './components/contents/desktop';
 import { adminPaths } from '@/constants/paths';
 
-interface ImageItem {
+type ImageItem = {
   id: string;
   url: string;
   file?: File;
 }
 
-interface PostFormValues {
+type PostFormValues = {
   title: string;
   images: ImageItem[];
   content: string;
 }
 
-interface PostPageProps {
+type PostPageProps = {
   type: 'create' | 'edit';
 }
 

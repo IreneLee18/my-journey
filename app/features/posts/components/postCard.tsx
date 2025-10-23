@@ -1,13 +1,13 @@
 import { Link } from 'react-router';
 
-export interface Post {
+export type Post = {
   id: string;
   title: string;
   publishDate: string;
   image: string;
 }
 
-interface PostCardProps {
+type PostCardProps = {
   post: Post;
 }
 

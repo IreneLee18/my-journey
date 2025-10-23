@@ -1,4 +1,4 @@
-interface ArticleProps {
+type ArticleProps = {
   publishDate: string;
   content: string;
 }

@@ -8,7 +8,7 @@ import {
   PaginationPrevious,
 } from '../ui/pagination';
 
-interface PaginationGroupProps {
+type PaginationGroupProps = {
   /** 當前頁碼 */
   currentPage?: number;
   /** 每頁顯示數量 */

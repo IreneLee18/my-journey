@@ -20,13 +20,13 @@ import { Trash2, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
-interface ImageItem {
+type ImageItem = {
   id: string;
   url: string;
   file?: File;
 }
 
-interface ImageUploadManagerProps {
+type ImageUploadManagerProps = {
   images: ImageItem[];
   onImagesChange: (images: ImageItem[]) => void;
 }

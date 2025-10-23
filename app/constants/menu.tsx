@@ -1,7 +1,7 @@
 import { FileText } from 'lucide-react';
 import { adminPaths } from './paths';
 
-export interface NavItemProps {
+export type NavItemProps = {
   name: string;
   path: string;
   icon: React.ReactNode;

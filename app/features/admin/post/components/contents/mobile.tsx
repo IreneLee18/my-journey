@@ -3,19 +3,19 @@ import { ImageUploadManager } from '../imageUploadManager';
 import { ArticleEditor } from '../articleEditor';
 import { type UseFormReturn } from 'react-hook-form';
 
-interface ImageItem {
+type ImageItem = {
   id: string;
   url: string;
   file?: File;
 }
 
-interface PostFormValues {
+type PostFormValues = {
   title: string;
   images: ImageItem[];
   content: string;
 }
 
-interface PostFormProps {
+type PostFormProps = {
   form: UseFormReturn<PostFormValues>;
 }
 

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Sun, User, Moon } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 
-interface MobileNavigationProps {
+type MobileNavigationProps = {
   isMobileMenuOpen: boolean;
   closeMobileMenu: () => void;
 }

@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { ChevronLeft } from 'lucide-react';
 
-interface PageLayoutProps {
+type PageLayoutProps = {
   title: string;
   children: React.ReactNode;
   className?: string;

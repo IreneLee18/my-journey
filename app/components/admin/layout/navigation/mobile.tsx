@@ -6,7 +6,7 @@ import { adminMenu } from '@/constants/menu';
 import { adminPaths, paths } from '@/constants/paths';
 import { NavItem } from './navItem';
 
-interface MobileNavigationProps {
+type MobileNavigationProps = {
   isMobileMenuOpen: boolean;
   closeMobileMenu: () => void;
 }
