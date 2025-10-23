@@ -2,6 +2,7 @@ import {
   type RouteConfig,
   index,
   layout,
+  prefix,
   route,
 } from '@react-router/dev/routes';
 
@@ -13,4 +14,7 @@ export default [
     route('posts/:id', 'routes/post.tsx'),
   ]),
   route('login', 'routes/login.tsx'),
+  ...prefix('admin', [
+    layout('routes/admin/layout.tsx', []),
+  ]),
 ] satisfies RouteConfig;
