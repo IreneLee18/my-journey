@@ -1,9 +1,14 @@
-import {
-  DesktopHeader,
-  MobileHeader,
-} from '@/components/admin/layout/header';
+import type { LoaderFunctionArgs } from 'react-router';
+import { DesktopHeader, MobileHeader } from '@/components/admin/layout/header';
 import DesktopNavigation from '@/components/admin/layout/navigation/desktop';
 import { Outlet } from 'react-router';
+import { requireUserId } from '@/lib/session.server';
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  // 檢查是否已登入，如果沒有登入會自動 redirect 到 /login
+  await requireUserId(request);
+  return null;
+};
 
 export default function AdminLayout() {
   return (

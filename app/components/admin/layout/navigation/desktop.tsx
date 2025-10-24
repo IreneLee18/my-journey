@@ -1,16 +1,15 @@
-import { useNavigate } from 'react-router';
 import { LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { paths } from '@/constants/paths';
 import { adminMenu } from '@/constants/menu';
 import { NavItem } from './navItem';
+import { useFetcher } from 'react-router';
 
 export default function DesktopNavigation() {
-  const navigate = useNavigate();
+  const fetcher = useFetcher();
 
   const handleLogout = () => {
-    // TODO: 實作登出邏輯
-    navigate(paths.home.url);
+    // 提交到專門的 logout action 路由
+    fetcher.submit(null, { method: 'post', action: '/admin/logout' });
   };
 
   return (
@@ -25,11 +24,12 @@ export default function DesktopNavigation() {
           variant="ghost"
           aria-label="登出"
           onClick={handleLogout}
+          disabled={fetcher.state !== 'idle'}
           title="登出"
-          className="w-full justify-start gap-3 px-4 py-3 text-red-600 hover:text-red-700  hover:bg-red-50"
+          className="w-full justify-start gap-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50"
         >
           <LogOut className="w-5 h-5" />
-          登出
+          {fetcher.state !== 'idle' ? '登出中...' : '登出'}
         </Button>
       </nav>
     </aside>

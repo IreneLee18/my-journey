@@ -1,10 +1,13 @@
-import { Home, LogOut } from 'lucide-react';
+import { Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { paths } from '@/constants/paths';
 
 export function DesktopHeader() {
+  const navigate = useNavigate();
+
   const handleBackToFrontend = () => {
-    return (window.location.href = '/');
+    navigate(paths.home.url);
   };
 
   return (

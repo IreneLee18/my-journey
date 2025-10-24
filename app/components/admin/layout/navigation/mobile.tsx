@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router';
+import { Link, useFetcher, useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Home, LogOut } from 'lucide-react';
 import { adminMenu } from '@/constants/menu';
@@ -9,23 +9,24 @@ import { NavItem } from './navItem';
 type MobileNavigationProps = {
   isMobileMenuOpen: boolean;
   closeMobileMenu: () => void;
-}
+};
 
 export default function MobileNavigation({
   isMobileMenuOpen,
   closeMobileMenu,
 }: MobileNavigationProps) {
+  const fetcher = useFetcher();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // TODO: 實作登出邏輯
+  const handleBackToFrontend = () => {
     closeMobileMenu();
     navigate(paths.home.url);
   };
 
-  const handleBackToFrontend = () => {
+  const handleLogout = () => {
     closeMobileMenu();
-    return (window.location.href = '/');
+    // 提交到專門的 logout action 路由
+    fetcher.submit(null, { method: 'post', action: '/admin/logout' });
   };
 
   const mobileMenuVariants = {
@@ -123,9 +124,10 @@ export default function MobileNavigation({
                 variant="ghost"
                 className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50"
                 onClick={handleLogout}
+                disabled={fetcher.state !== 'idle'}
               >
                 <LogOut className="w-5 h-5" />
-                登出
+                {fetcher.state !== 'idle' ? '登出中...' : '登出'}
               </Button>
             </motion.div>
           </motion.aside>
