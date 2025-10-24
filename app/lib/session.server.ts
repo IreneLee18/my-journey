@@ -1,10 +1,15 @@
 import { redirect } from 'react-router';
 
+// 建立 session cookie header（不 redirect）
+export const createSessionCookie = (userId: string): string => {
+  return `user_id=${userId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 24 * 30}`;
+};
 
+// 建立 session 並 redirect（用於傳統 form action）
 export const createUserSession = async (userId: string, redirectTo: string) => {
   return redirect(redirectTo, {
     headers: {
-      'Set-Cookie': `user_id=${userId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 24 * 30}`,
+      'Set-Cookie': createSessionCookie(userId),
     },
   });
 };

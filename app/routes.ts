@@ -14,6 +14,9 @@ export default [
     route('posts/:id', 'routes/post.tsx'),
   ]),
   route('login', 'routes/login.tsx'),
+  ...prefix('api', [
+    route('login', 'routes/api/login.tsx'),
+  ]),
   ...prefix('admin', [
     layout('routes/admin/layout.tsx', [
       route('logout', 'routes/admin/logout.tsx'),
