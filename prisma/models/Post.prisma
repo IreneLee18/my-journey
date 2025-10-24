@@ -1,0 +1,11 @@
+model Post {
+  id          String      @id @default(uuid())
+  title       String
+  content     String?     // 文章內容（HTML 格式）
+  publishDate DateTime    @default(now())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  images PostImage[]
+}
+
