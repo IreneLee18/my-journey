@@ -7,9 +7,14 @@ import { adminPaths } from '@/constants/paths';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
 import { useStatusDialogState } from '@/utils/statusDialogState';
+import { useGetPosts } from '@/server/posts/getPosts/hook';
+import { useDeletePost } from '@/server/posts/deletePost/hook';
 
 export default function AdminPosts() {
   const { openStatusDialog } = useStatusDialogState();
+  const { data, isLoading, error } = useGetPosts({ page: 1, pageSize: 10 });
+  const deletePost = useDeletePost();
+
   const onDelete = (id: string) => {
     openStatusDialog({
       title: 'Delete Post',
@@ -17,11 +22,34 @@ export default function AdminPosts() {
       status: 'delete',
       confirmText: 'Delete',
       cancelText: 'Cancel',
-      onConfirm: () => {
-        console.log('delete', id);
+      onConfirm: async () => {
+        try {
+          await deletePost.mutateAsync({ id });
+          // 成功訊息（可選）
+          console.log('文章已刪除');
+        } catch (error) {
+          console.error('刪除文章失敗:', error);
+          alert(error instanceof Error ? error.message : '刪除文章失敗');
+        }
       },
     });
   };
+
+  if (isLoading) {
+    return (
+      <PageLayout title="Posts">
+        <div>Loading...</div>
+      </PageLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageLayout title="Posts">
+        <div>Error: {error.message}</div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout
@@ -37,22 +65,7 @@ export default function AdminPosts() {
       }
     >
       <DataTable
-        data={[
-          {
-            id: '1',
-            title: 'Post 1',
-            publishDate: '2021-01-01',
-            image:
-              'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-          },
-          {
-            id: '2',
-            title: 'Post 2',
-            publishDate: '2021-01-02',
-            image:
-              'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80',
-          },
-        ]}
+        data={data?.data?.posts || []}
         columns={getColumns({ onDelete })}
       />
     </PageLayout>

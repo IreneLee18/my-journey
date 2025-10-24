@@ -5,13 +5,8 @@ import { Link } from 'react-router';
 import { adminPaths } from '@/constants/paths';
 import { cn } from '@/lib/utils';
 import { PencilIcon, TrashIcon } from 'lucide-react';
+import type { Post } from '@/server/posts/getPosts/type';
 
-type PostData = {
-  id: string;
-  title: string;
-  publishDate: string;
-  image: string;
-};
 
 type ColumnProps = {
   onDelete: (id: string) => void;
@@ -19,7 +14,7 @@ type ColumnProps = {
 
 export const getColumns = ({
   onDelete,
-}: ColumnProps): ColumnDef<PostData>[] => {
+}: ColumnProps): ColumnDef<Post>[] => {
   return [
     {
       accessorKey: 'title',
@@ -30,11 +25,23 @@ export const getColumns = ({
       },
     },
     {
-      accessorKey: 'image',
+      accessorKey: 'images',
       header: 'Image',
       cell: (row) => {
-        const { image, title } = row.row.original;
-        return <img src={image} alt={title} width={100} height={100} />;
+        const { images, title } = row.row.original;
+        // 顯示第一張圖片（如果有的話）
+        const firstImage = images[0];
+        return firstImage ? (
+          <img
+            src={firstImage.url}
+            alt={title}
+            className="w-24 h-24 object-cover rounded"
+          />
+        ) : (
+          <div className="w-24 h-24 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
+            無圖片
+          </div>
+        );
       },
     },
     {

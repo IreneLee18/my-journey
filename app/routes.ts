@@ -17,6 +17,12 @@ export default [
   ...prefix('api', [
     route('login', 'routes/api/login.tsx'),
     route('logout', 'routes/api/logout.tsx'),
+    route('posts', 'routes/api/posts.tsx'),
+    route('posts/create', 'routes/api/posts/create.tsx'),
+    route('posts/update', 'routes/api/posts/update.tsx'),
+    route('posts/delete', 'routes/api/posts/delete.tsx'),
+    route('posts/:id', 'routes/api/posts/get-one.tsx'),
+    route('upload-images', 'routes/api/upload-images.tsx'),
   ]),
   ...prefix('admin', [
     layout('routes/admin/layout.tsx', [
