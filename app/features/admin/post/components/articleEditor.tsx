@@ -6,7 +6,7 @@ import '../styles.css';
 type ArticleEditorProps = {
   value: string;
   onChange: (value: string) => void;
-}
+};
 
 export function ArticleEditor({ value, onChange }: ArticleEditorProps) {
   const ReactQuillComponent = useRef<typeof ReactQuill | null>(null);
@@ -31,6 +31,19 @@ export function ArticleEditor({ value, onChange }: ArticleEditorProps) {
       ['bold', 'italic', 'underline', 'strike', { color: [] }],
       [{ list: 'ordered' }, { list: 'bullet' }],
     ],
+    keyboard: {
+      bindings: {
+        linebreak: {
+          key: 13,
+          shiftKey: false,
+          handler: function(this: any, range: any) {
+            this.quill.insertText(range.index, '\n');
+            this.quill.setSelection(range.index + 1);
+            return false;
+          }
+        }
+      }
+    }
   };
 
   const formats = [
