@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, User, Menu, X, Moon } from 'lucide-react';
+import { Sun, User, Menu, X, Moon, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router';
 import DesktopNavigation from './navigation/desktop';
 import MobileNavigation from './navigation/mobile';
 import { useTheme } from '@/hooks/useTheme';
+import { useAuthStore } from '@/stores/authStore';
 
 export function Header() {
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
 
   const toggleMobileMenu = () => {
     return setIsMobileMenuOpen((prev) => {
@@ -51,11 +53,13 @@ export function Header() {
             <Button
               size="icon"
               variant="iconGhost"
-              aria-label="Login"
+              aria-label={isAuthenticated ? 'Admin' : 'Login'}
               className="hidden md:flex"
-              onClick={() => navigate('/login')}
+              onClick={() => {
+                return navigate(isAuthenticated ? '/admin/posts' : '/login');
+              }}
             >
-              <User />
+              {isAuthenticated ? <Settings /> : <User />}
             </Button>
 
             {/* Mobile Menu Button */}

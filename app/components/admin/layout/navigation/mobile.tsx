@@ -7,6 +7,7 @@ import { adminPaths, paths } from '@/constants/paths';
 import { NavItem } from './navItem';
 import { useMutation } from '@tanstack/react-query';
 import { logoutApi } from '@/server/login/api';
+import { useAuthStore } from '@/stores/authStore';
 
 type MobileNavigationProps = {
   isMobileMenuOpen: boolean;
@@ -18,11 +19,12 @@ export default function MobileNavigation({
   closeMobileMenu,
 }: MobileNavigationProps) {
   const navigate = useNavigate();
+  const { onLogout } = useAuthStore();
 
   const logoutMutation = useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
-      console.log('登出成功，導頁到首頁');
+      onLogout();
       closeMobileMenu();
       navigate('/');
     },

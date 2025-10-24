@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
-import { Sun, User, Moon } from 'lucide-react';
+import { Sun, User, Moon, Settings } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
+import { useAuthStore } from '@/stores/authStore';
 
 type MobileNavigationProps = {
   isMobileMenuOpen: boolean;
@@ -15,6 +16,7 @@ export default function MobileNavigation({
 }: MobileNavigationProps) {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
 
   const mobileMenuVariants = {
     hidden: {
@@ -92,10 +94,12 @@ export default function MobileNavigation({
             <Button
               size="icon"
               variant="iconGhost"
-              aria-label="Login"
-              onClick={() => navigate('/login')}
+              aria-label={isAuthenticated ? 'Admin' : 'Login'}
+              onClick={() => {
+                return navigate(isAuthenticated ? '/admin/posts' : '/login');
+              }}
             >
-              <User />
+              {isAuthenticated ? <Settings /> : <User />}
             </Button>
           </motion.div>
         </motion.nav>

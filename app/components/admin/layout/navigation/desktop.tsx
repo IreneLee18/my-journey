@@ -5,14 +5,16 @@ import { NavItem } from './navItem';
 import { useNavigate } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 import { logoutApi } from '@/server/login/api';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function DesktopNavigation() {
   const navigate = useNavigate();
+  const { onLogout } = useAuthStore();
 
   const logoutMutation = useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
-      console.log('登出成功，導頁到首頁');
+      onLogout();
       navigate('/');
     },
     onError: (error) => {

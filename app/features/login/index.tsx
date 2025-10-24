@@ -8,6 +8,7 @@ import { Form, FormInput, FormCheckbox } from '@/components/customs/form';
 import { useTheme } from '@/hooks/useTheme';
 import { loginApi } from '@/server/login/api';
 import { loginSchema, type LoginFormValues } from '@/server/login/type';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function LoginPage() {
   const form = useForm<LoginFormValues>({
@@ -20,12 +21,15 @@ export default function LoginPage() {
   });
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const { onLogin } = useAuthStore();
 
   // 使用 TanStack Query 的 useMutation
   const loginMutation = useMutation({
     mutationFn: loginApi,
     onSuccess: (data) => {
       console.log('登入成功，準備導頁到:', data.redirectTo);
+      // 更新 auth store 狀態
+      onLogin();
       if (data.redirectTo) {
         navigate(data.redirectTo);
       }
@@ -103,7 +107,7 @@ export default function LoginPage() {
                 </p>
               </div>
             )}
-            
+
             <div className="space-y-4">
               <FormInput
                 name="email"
