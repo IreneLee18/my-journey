@@ -5,3 +5,11 @@
 # React Router
 /.react-router/
 /build/
+
+# Prisma
+/generated/prisma
+/prisma/seed.ts
+/prisma/*.db
+/prisma/*.db-journal
+/prisma/*.db-shm
+/prisma/*.db-wal
