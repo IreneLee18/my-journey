@@ -1,10 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Link, useFetcher, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Home, LogOut } from 'lucide-react';
 import { adminMenu } from '@/constants/menu';
 import { adminPaths, paths } from '@/constants/paths';
 import { NavItem } from './navItem';
+import { useMutation } from '@tanstack/react-query';
+import { logoutApi } from '@/server/login/api';
 
 type MobileNavigationProps = {
   isMobileMenuOpen: boolean;
@@ -15,8 +17,19 @@ export default function MobileNavigation({
   isMobileMenuOpen,
   closeMobileMenu,
 }: MobileNavigationProps) {
-  const fetcher = useFetcher();
   const navigate = useNavigate();
+
+  const logoutMutation = useMutation({
+    mutationFn: logoutApi,
+    onSuccess: () => {
+      console.log('登出成功，導頁到首頁');
+      closeMobileMenu();
+      navigate('/');
+    },
+    onError: (error) => {
+      console.error('登出失敗:', error);
+    },
+  });
 
   const handleBackToFrontend = () => {
     closeMobileMenu();
@@ -24,9 +37,7 @@ export default function MobileNavigation({
   };
 
   const handleLogout = () => {
-    closeMobileMenu();
-    // 提交到專門的 logout action 路由
-    fetcher.submit(null, { method: 'post', action: '/admin/logout' });
+    logoutMutation.mutate();
   };
 
   const mobileMenuVariants = {
@@ -124,10 +135,10 @@ export default function MobileNavigation({
                 variant="ghost"
                 className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50"
                 onClick={handleLogout}
-                disabled={fetcher.state !== 'idle'}
+                disabled={logoutMutation.isPending}
               >
                 <LogOut className="w-5 h-5" />
-                {fetcher.state !== 'idle' ? '登出中...' : '登出'}
+                {logoutMutation.isPending ? '登出中...' : '登出'}
               </Button>
             </motion.div>
           </motion.aside>

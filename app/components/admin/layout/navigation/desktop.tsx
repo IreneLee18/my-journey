@@ -2,14 +2,26 @@ import { LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { adminMenu } from '@/constants/menu';
 import { NavItem } from './navItem';
-import { useFetcher } from 'react-router';
+import { useNavigate } from 'react-router';
+import { useMutation } from '@tanstack/react-query';
+import { logoutApi } from '@/server/login/api';
 
 export default function DesktopNavigation() {
-  const fetcher = useFetcher();
+  const navigate = useNavigate();
+
+  const logoutMutation = useMutation({
+    mutationFn: logoutApi,
+    onSuccess: () => {
+      console.log('登出成功，導頁到首頁');
+      navigate('/');
+    },
+    onError: (error) => {
+      console.error('登出失敗:', error);
+    },
+  });
 
   const handleLogout = () => {
-    // 提交到專門的 logout action 路由
-    fetcher.submit(null, { method: 'post', action: '/admin/logout' });
+    logoutMutation.mutate();
   };
 
   return (
@@ -24,12 +36,12 @@ export default function DesktopNavigation() {
           variant="ghost"
           aria-label="登出"
           onClick={handleLogout}
-          disabled={fetcher.state !== 'idle'}
+          disabled={logoutMutation.isPending}
           title="登出"
           className="w-full justify-start gap-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50"
         >
           <LogOut className="w-5 h-5" />
-          {fetcher.state !== 'idle' ? '登出中...' : '登出'}
+          {logoutMutation.isPending ? '登出中...' : '登出'}
         </Button>
       </nav>
     </aside>

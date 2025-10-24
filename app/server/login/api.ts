@@ -6,6 +6,11 @@ type LoginResponse = {
   error?: string;
 };
 
+type LogoutResponse = {
+  success: boolean;
+  error?: string;
+};
+
 export const loginApi = async (
   data: Pick<LoginFormValues, 'email' | 'password'>
 ): Promise<LoginResponse> => {
@@ -21,6 +26,20 @@ export const loginApi = async (
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.error || '登入失敗');
+  }
+
+  return response.json();
+};
+
+export const logoutApi = async (): Promise<LogoutResponse> => {
+  const response = await fetch('/api/logout', {
+    method: 'POST',
+    credentials: 'include', // 確保 cookie 會被清除
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || '登出失敗');
   }
 
   return response.json();
