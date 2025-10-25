@@ -18,7 +18,7 @@ export default function AdminLayout() {
         <MobileHeader />
         <div className="flex">
           <DesktopNavigation />
-          <main className="flex-1 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+          <main className="flex-1 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 max-h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide">
             <Outlet />
           </main>
         </div>
