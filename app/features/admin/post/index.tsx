@@ -12,6 +12,7 @@ import { useGetPost } from '@/server/posts/getPost/hook';
 import { useUploadImages } from '@/server/upload/hooks';
 import { useEffect } from 'react';
 import type { PostImageInput } from '@/server/posts/createPost/type';
+import { useStatusDialogState } from '@/utils/statusDialogState';
 
 type ImageItem = {
   id: string;
@@ -32,6 +33,7 @@ type PostPageProps = {
 export default function PostPage({ type }: PostPageProps) {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { openStatusDialog } = useStatusDialogState();
 
   // API hooks
   const createPost = useCreatePost();
@@ -142,7 +144,11 @@ export default function PostPage({ type }: PostPageProps) {
       navigate(adminPaths.posts.url);
     } catch (error) {
       console.error('儲存文章失敗:', error);
-      alert(error instanceof Error ? error.message : '儲存文章失敗');
+      openStatusDialog({
+        title: '儲存文章失敗',
+        description: error instanceof Error ? error.message : '儲存文章失敗',
+        status: 'error',
+      });
     }
   };
 
