@@ -1,4 +1,14 @@
 /* Custom Quill Container Styles */
+.dark .ql-container {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.dark .ql-snow.ql-toolbar {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
 .ql-container {
   min-height: calc(100% - 36px);
   max-height: calc(100% - 36px);

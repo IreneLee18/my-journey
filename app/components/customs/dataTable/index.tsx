@@ -86,9 +86,9 @@ export function DataTable<TData>({
 
   return (
     <div className="w-full max-w-full space-y-4">
-      <div className="max-w-full rounded-md border">
+      <div className="max-w-full rounded-md border border-gray-200 dark:border-gray-800">
         <Table>
-          <TableHeader>
+          <TableHeader> 
             {table.getHeaderGroups().map((headerGroup) => {
               return (
                 <TableRow key={headerGroup.id}>
@@ -103,7 +103,7 @@ export function DataTable<TData>({
                           minWidth: columnSize,
                           maxWidth: 400,
                         }}
-                        className="p-4 border-none bg-gray-100"
+                        className="p-4 border-none bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
                       >
                         {header.isPlaceholder
                           ? null
@@ -200,7 +200,7 @@ export function DataTable<TData>({
         </Table>
       </div>
       <div className={cn('flex items-center justify-end space-x-2 py-4')}>
-        <div className="text-muted-foreground text-sm flex-1">
+        <div className="text-gray-600 dark:text-gray-400 text-sm flex-1">
           共
           {pagination?.totalElements ?? table.getFilteredRowModel().rows.length}
           筆

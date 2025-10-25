@@ -6,7 +6,7 @@ type ArticleProps = {
 export function Article({ publishDate, content }: ArticleProps) {
   return (
     <div className="w-full">
-      <div className="w-full scrollbar-hide lg:overflow-y-auto lg:max-h-[calc(100vh-25rem)]">
+      <div className="w-full scrollbar-hide lg:overflow-y-auto lg:max-h-[calc(100vh-25rem)] lg:min-h-[calc(100vh-25rem)]">
         {/* Article Content - 使用 dangerouslySetInnerHTML 顯示 HTML */}
         <div
           className="prose prose-lg dark:prose-invert max-w-none"

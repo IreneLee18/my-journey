@@ -20,9 +20,9 @@ export function MobileHeader() {
   return (
     <>
       {/* Mobile Header */}
-      <header className="md:hidden bg-white border-gray-200 border-b sticky top-0 z-30 transition-colors duration-300">
+      <header className="md:hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 border-b sticky top-0 z-30 transition-colors duration-300">
         <div className="flex items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-bold text-gray-900">
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white">
             Irene's Lee Journey 後台
           </h1>
 

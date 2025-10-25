@@ -6,7 +6,7 @@ import { useGetPosts } from '@/server/posts/getPosts/hook';
 
 export default function PostsPage() {
   const [searchParams, setSearchParams] = useState({ page: 1, size: 12 });
-  
+
   const { data, isLoading, error } = useGetPosts({
     page: searchParams.page,
     pageSize: searchParams.size,
@@ -53,20 +53,22 @@ export default function PostsPage() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {posts.map((post) => {
-              return (
-                <PostCard 
-                  key={post.id} 
-                  post={{
-                    id: post.id,
-                    title: post.title,
-                    publishDate: post.publishDate,
-                    image: post.images[0]?.url || '/placeholder.jpg',
-                  }} 
-                />
-              );
-            })}
+          <div className="lg:min-h-[calc(100vh-25rem)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
+              {posts.map((post) => {
+                return (
+                  <PostCard
+                    key={post.id}
+                    post={{
+                      id: post.id,
+                      title: post.title,
+                      publishDate: post.publishDate,
+                      image: post.images[0]?.url || '/placeholder.jpg',
+                    }}
+                  />
+                );
+              })}
+            </div>
           </div>
           <PaginationGroup
             currentPage={searchParams.page}

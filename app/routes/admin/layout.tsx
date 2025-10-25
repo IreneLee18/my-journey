@@ -12,13 +12,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function AdminLayout() {
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="flex-1 flex flex-col">
         <DesktopHeader />
         <MobileHeader />
         <div className="flex">
           <DesktopNavigation />
-          <main className="flex-1">
+          <main className="flex-1 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
             <Outlet />
           </main>
         </div>

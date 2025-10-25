@@ -1,13 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
-import { Home, LogOut } from 'lucide-react';
+import { Home, LogOut, Sun, Moon } from 'lucide-react';
 import { adminMenu } from '@/constants/menu';
 import { adminPaths, paths } from '@/constants/paths';
 import { NavItem } from './navItem';
 import { useMutation } from '@tanstack/react-query';
 import { logoutApi } from '@/server/login/api';
 import { useAuthStore } from '@/stores/authStore';
+import { useTheme } from '@/hooks/useTheme';
 
 type MobileNavigationProps = {
   isMobileMenuOpen: boolean;
@@ -20,6 +21,7 @@ export default function MobileNavigation({
 }: MobileNavigationProps) {
   const navigate = useNavigate();
   const { onLogout } = useAuthStore();
+  const { theme, toggleTheme } = useTheme();
 
   const logoutMutation = useMutation({
     mutationFn: logoutApi,
@@ -39,7 +41,7 @@ export default function MobileNavigation({
   };
 
   const handleLogout = () => {
-    logoutMutation.mutate();
+    return logoutMutation.mutate();
   };
 
   const mobileMenuVariants = {
@@ -89,7 +91,7 @@ export default function MobileNavigation({
 
           {/* Sidebar */}
           <motion.aside
-            className="md:hidden fixed left-0 top-0 h-screen w-72 bg-white border-r border-gray-200 z-50 flex flex-col"
+            className="md:hidden fixed left-0 top-0 h-screen w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-50 flex flex-col"
             initial="hidden"
             animate="visible"
             exit="hidden"
@@ -98,11 +100,11 @@ export default function MobileNavigation({
             {/* Header */}
             <motion.div
               variants={mobileLinkVariants}
-              className="p-4 border-b border-gray-200"
+              className="p-4 border-b border-gray-200 dark:border-gray-800"
             >
               <Link
                 to={adminPaths.posts.url}
-                className="text-lg font-bold text-gray-900 hover:opacity-80 transition-opacity"
+                className="text-lg font-bold text-gray-900 dark:text-white hover:opacity-80 transition-opacity"
                 onClick={closeMobileMenu}
               >
                 Irene's Lee Journey 後台
@@ -123,8 +125,16 @@ export default function MobileNavigation({
             {/* Footer Actions */}
             <motion.div
               variants={mobileLinkVariants}
-              className="p-4 border-t border-gray-200 space-y-2"
+              className="p-4 border-t border-gray-200 dark:border-gray-800 space-y-2"
             >
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-3"
+                onClick={toggleTheme}
+              >
+                {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                {theme === 'dark' ? '深色模式' : '淺色模式'}
+              </Button>
               <Button
                 variant="ghost"
                 className="w-full justify-start gap-3"
@@ -135,7 +145,7 @@ export default function MobileNavigation({
               </Button>
               <Button
                 variant="ghost"
-                className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50"
+                className="w-full justify-start gap-3 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-950"
                 onClick={handleLogout}
                 disabled={logoutMutation.isPending}
               >

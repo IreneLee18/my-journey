@@ -23,11 +23,11 @@ export default function DesktopNavigation() {
   });
 
   const handleLogout = () => {
-    logoutMutation.mutate();
+    return logoutMutation.mutate();
   };
 
   return (
-    <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-80px)] transition-colors duration-300">
+    <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-[calc(100vh-80px)] transition-colors duration-300">
       <nav className="p-4 flex flex-col justify-between h-full">
         <div className="space-y-2">
           {adminMenu.map((item) => {
@@ -40,7 +40,7 @@ export default function DesktopNavigation() {
           onClick={handleLogout}
           disabled={logoutMutation.isPending}
           title="登出"
-          className="w-full justify-start gap-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50"
+          className="w-full justify-start gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-950"
         >
           <LogOut className="w-5 h-5" />
           {logoutMutation.isPending ? '登出中...' : '登出'}
