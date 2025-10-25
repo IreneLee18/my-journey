@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updatePostApi } from './api';
 import type { UpdatePostInput } from './type';
+import { toast } from 'sonner';
 
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
@@ -16,6 +17,11 @@ export const useUpdatePost = () => {
           queryKey: ['post', data.data.post.id],
         });
       }
+      toast.success('文章已成功更新');
+    },
+    onError: (error) => {
+      console.error('更新文章失敗:', error);
+      toast.error('更新文章失敗，請稍後再試');
     },
   });
 };

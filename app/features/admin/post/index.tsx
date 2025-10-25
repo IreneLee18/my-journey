@@ -36,8 +36,8 @@ export default function PostPage({ type }: PostPageProps) {
   const { openStatusDialog } = useStatusDialogState();
 
   // API hooks
-  const createPost = useCreatePost();
-  const updatePost = useUpdatePost();
+  const { mutate: createPost } = useCreatePost();
+  const { mutate: updatePost } = useUpdatePost();
   const uploadImages = useUploadImages();
   const { data: postData, isLoading } = useGetPost(
     type === 'edit' ? id : undefined
@@ -76,6 +76,34 @@ export default function PostPage({ type }: PostPageProps) {
   const onSubmit = async (data: FieldValues) => {
     try {
       const formData = data as PostFormValues;
+
+      // 驗證必填欄位
+      if (!formData.title || formData.title.trim() === '') {
+        openStatusDialog({
+          title: '缺少必填欄位',
+          description: '文章標題不能為空',
+          status: 'error',
+        });
+        return;
+      }
+
+      if (!formData.content || formData.content.trim() === '') {
+        openStatusDialog({
+          title: '缺少必填欄位',
+          description: '文章內容不能為空',
+          status: 'error',
+        });
+        return;
+      }
+
+      if (!formData.images || formData.images.length === 0) {
+        openStatusDialog({
+          title: '缺少必填欄位',
+          description: '至少需要上傳一張照片',
+          status: 'error',
+        });
+        return;
+      }
 
       // 1. 先上傳新的圖片（有 file 屬性的）
       const newImages = formData.images.filter((img) => {
@@ -125,19 +153,15 @@ export default function PostPage({ type }: PostPageProps) {
       });
 
       // 3. 建立或更新文章
+      const postData = {
+        title: formData.title,
+        content: formData.content,
+        images: allImages,
+      };
       if (type === 'create') {
-        await createPost.mutateAsync({
-          title: formData.title,
-          content: formData.content,
-          images: allImages,
-        });
+        createPost(postData);
       } else if (type === 'edit' && id) {
-        await updatePost.mutateAsync({
-          id,
-          title: formData.title,
-          content: formData.content,
-          images: allImages,
-        });
+        updatePost({ ...postData, id });
       }
 
       // 4. 導向文章列表

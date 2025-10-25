@@ -9,11 +9,12 @@ import { Plus } from 'lucide-react';
 import { useStatusDialogState } from '@/utils/statusDialogState';
 import { useGetPosts } from '@/server/posts/getPosts/hook';
 import { useDeletePost } from '@/server/posts/deletePost/hook';
+import { toast } from 'sonner';
 
 export default function AdminPosts() {
   const { openStatusDialog } = useStatusDialogState();
   const { data, isLoading, error } = useGetPosts({ page: 1, pageSize: 10 });
-  const deletePost = useDeletePost();
+  const { mutate: deletePost } = useDeletePost();
 
   const onDelete = (id: string) => {
     openStatusDialog({
@@ -22,15 +23,8 @@ export default function AdminPosts() {
       status: 'delete',
       confirmText: 'Delete',
       cancelText: 'Cancel',
-      onConfirm: async () => {
-        try {
-          await deletePost.mutateAsync({ id });
-          // 成功訊息（可選）
-          console.log('文章已刪除');
-        } catch (error) {
-          console.error('刪除文章失敗:', error);
-          alert(error instanceof Error ? error.message : '刪除文章失敗');
-        }
+      onConfirm: () => {
+        deletePost({ id });
       },
     });
   };
