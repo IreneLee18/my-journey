@@ -1,14 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Sun, Moon, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Form, FormInput, FormCheckbox } from '@/components/customs/form';
 import { useTheme } from '@/hooks/useTheme';
-import { loginApi } from '@/server/login/api';
-import { loginSchema, type LoginFormValues } from '@/server/login/type';
-import { useAuthStore } from '@/stores/authStore';
+import { useLogin } from '@/server/auth/hook';
+import { loginSchema, type LoginFormValues } from '@/server/auth/type';
 
 export default function LoginPage() {
   const form = useForm<LoginFormValues>({
@@ -21,26 +19,11 @@ export default function LoginPage() {
   });
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const { onLogin } = useAuthStore();
 
-  // 使用 TanStack Query 的 useMutation
-  const loginMutation = useMutation({
-    mutationFn: loginApi,
-    onSuccess: (data) => {
-      console.log('登入成功，準備導頁到:', data.redirectTo);
-      // 更新 auth store 狀態
-      onLogin();
-      if (data.redirectTo) {
-        navigate(data.redirectTo);
-      }
-    },
-    onError: (error) => {
-      console.error('登入失敗:', error);
-    },
-  });
+  const { mutate: loginMutation, isPending, error: loginError } = useLogin();
 
   const handleSubmit = (data: LoginFormValues) => {
-    loginMutation.mutate({
+    loginMutation({
       email: data.email,
       password: data.password,
     });
@@ -100,10 +83,10 @@ export default function LoginPage() {
             className="mt-8 space-y-6"
             allowEnterSubmit
           >
-            {loginMutation.error && (
+            {loginError && (
               <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
                 <p className="text-sm text-red-800 dark:text-red-200">
-                  {loginMutation.error.message}
+                  {loginError.message}
                 </p>
               </div>
             )}
@@ -128,8 +111,8 @@ export default function LoginPage() {
             <div className="flex items-center justify-between">
               <FormCheckbox name="rememberMe" label="記住我" />
             </div>
-            <Button type="submit" disabled={loginMutation.isPending}>
-              {loginMutation.isPending ? '登入中...' : '登入'}
+            <Button type="submit" disabled={isPending}>
+              {isPending ? '登入中...' : '登入'}
             </Button>
           </Form>
         </div>

@@ -3,7 +3,7 @@ import { data } from 'react-router';
 import { ZodError } from 'zod';
 import { login } from '@/lib/auth.server';
 import { createSessionCookie } from '@/lib/session.server';
-import { loginSchema } from '@/server/login/type';
+import { loginSchema } from '@/server/auth/type';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {

@@ -1,4 +1,4 @@
-import type { LoginFormValues } from '@/server/login/type';
+import type { LoginFormValues } from '@/server/auth/type';
 
 type LoginResponse = {
   success: boolean;

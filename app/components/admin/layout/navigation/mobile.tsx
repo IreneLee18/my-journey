@@ -5,8 +5,7 @@ import { Home, LogOut, Sun, Moon } from 'lucide-react';
 import { adminMenu } from '@/constants/menu';
 import { adminPaths, paths } from '@/constants/paths';
 import { NavItem } from './navItem';
-import { useMutation } from '@tanstack/react-query';
-import { logoutApi } from '@/server/login/api';
+import { useLogout } from '@/server/auth/hook';
 import { useAuthStore } from '@/stores/authStore';
 import { useTheme } from '@/hooks/useTheme';
 
@@ -23,17 +22,7 @@ export default function MobileNavigation({
   const { onLogout } = useAuthStore();
   const { theme, toggleTheme } = useTheme();
 
-  const logoutMutation = useMutation({
-    mutationFn: logoutApi,
-    onSuccess: () => {
-      onLogout();
-      closeMobileMenu();
-      navigate('/');
-    },
-    onError: (error) => {
-      console.error('登出失敗:', error);
-    },
-  });
+  const { mutate: logoutMutation, isPending } = useLogout();
 
   const handleBackToFrontend = () => {
     closeMobileMenu();
@@ -41,7 +30,7 @@ export default function MobileNavigation({
   };
 
   const handleLogout = () => {
-    return logoutMutation.mutate();
+    logoutMutation();
   };
 
   const mobileMenuVariants = {
@@ -132,7 +121,11 @@ export default function MobileNavigation({
                 className="w-full justify-start gap-3"
                 onClick={toggleTheme}
               >
-                {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                {theme === 'dark' ? (
+                  <Moon className="w-5 h-5" />
+                ) : (
+                  <Sun className="w-5 h-5" />
+                )}
                 {theme === 'dark' ? '深色模式' : '淺色模式'}
               </Button>
               <Button
@@ -147,10 +140,10 @@ export default function MobileNavigation({
                 variant="ghost"
                 className="w-full justify-start gap-3 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-950"
                 onClick={handleLogout}
-                disabled={logoutMutation.isPending}
+                disabled={isPending}
               >
                 <LogOut className="w-5 h-5" />
-                {logoutMutation.isPending ? '登出中...' : '登出'}
+                {isPending ? '登出中...' : '登出'}
               </Button>
             </motion.div>
           </motion.aside>

@@ -3,27 +3,17 @@ import { Button } from '@/components/ui/button';
 import { adminMenu } from '@/constants/menu';
 import { NavItem } from './navItem';
 import { useNavigate } from 'react-router';
-import { useMutation } from '@tanstack/react-query';
-import { logoutApi } from '@/server/login/api';
+import { useLogout } from '@/server/auth/hook';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function DesktopNavigation() {
   const navigate = useNavigate();
   const { onLogout } = useAuthStore();
 
-  const logoutMutation = useMutation({
-    mutationFn: logoutApi,
-    onSuccess: () => {
-      onLogout();
-      navigate('/');
-    },
-    onError: (error) => {
-      console.error('登出失敗:', error);
-    },
-  });
+  const { mutate: logoutMutation, isPending } = useLogout();
 
   const handleLogout = () => {
-    return logoutMutation.mutate();
+    logoutMutation();
   };
 
   return (
@@ -38,12 +28,12 @@ export default function DesktopNavigation() {
           variant="ghost"
           aria-label="登出"
           onClick={handleLogout}
-          disabled={logoutMutation.isPending}
+          disabled={isPending}
           title="登出"
           className="w-full justify-start gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-950"
         >
           <LogOut className="w-5 h-5" />
-          {logoutMutation.isPending ? '登出中...' : '登出'}
+          {isPending ? '登出中...' : '登出'}
         </Button>
       </nav>
     </aside>
