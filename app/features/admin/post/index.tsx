@@ -2,7 +2,8 @@ import { PageLayout } from '@/components/customs/pageLayout';
 import { useNavigate, useParams } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Form, FormInput } from '@/components/customs/form';
-import { useForm, type FieldValues } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { MobileContent } from './components/contents/mobile';
 import { DesktopContent } from './components/contents/desktop';
 import { adminPaths } from '@/constants/paths';
@@ -11,20 +12,12 @@ import { useUpdatePost } from '@/server/posts/updatePost/hook';
 import { useGetPost } from '@/server/posts/getPost/hook';
 import { useUploadImages } from '@/server/upload/hooks';
 import { useEffect } from 'react';
-import type { PostImageInput } from '@/server/posts/createPost/type';
+import {
+  postFormSchema,
+  type PostFormType,
+  type PostImageType,
+} from '@/server/posts/shared.type';
 import { useStatusDialogState } from '@/utils/statusDialogState';
-
-type ImageItem = {
-  id: string;
-  url: string;
-  file?: File;
-};
-
-type PostFormValues = {
-  title: string;
-  images: ImageItem[];
-  content: string;
-};
 
 type PostPageProps = {
   type: 'create' | 'edit';
@@ -35,7 +28,6 @@ export default function PostPage({ type }: PostPageProps) {
   const { id } = useParams();
   const { openStatusDialog } = useStatusDialogState();
 
-  // API hooks
   const { mutate: createPost } = useCreatePost();
   const { mutate: updatePost } = useUpdatePost();
   const uploadImages = useUploadImages();
@@ -43,11 +35,13 @@ export default function PostPage({ type }: PostPageProps) {
     type === 'edit' ? id : undefined
   );
 
-  const form = useForm<PostFormValues>({
+  const form = useForm<PostFormType>({
+    resolver: zodResolver(postFormSchema),
     defaultValues: {
       title: '',
       images: [],
       content: '',
+      id: undefined,
     },
   });
 
@@ -56,12 +50,18 @@ export default function PostPage({ type }: PostPageProps) {
     if (type === 'edit' && postData?.data?.post) {
       const post = postData.data.post;
       form.reset({
+        id: post.id,
         title: post.title,
         images: post.images.map((img) => {
           return {
             id: img.id,
             url: img.url,
-            // 已存在的圖片沒有 file
+            filename: img.filename,
+            path: 'path' in img ? img.path : '',
+            size: 'size' in img ? img.size : 0,
+            mimeType: 'mimeType' in img ? img.mimeType : '',
+            order: img.order,
+            // 已存在的圖片沒有 file 物件
           };
         }),
         content: post.content || '',
@@ -73,36 +73,18 @@ export default function PostPage({ type }: PostPageProps) {
     return navigate('/admin/posts');
   };
 
-  const onSubmit = async (data: FieldValues) => {
+  const onSubmit = async (formData: PostFormType) => {
     try {
-      const formData = data as PostFormValues;
-
-      // 驗證必填欄位
-      if (!formData.title || formData.title.trim() === '') {
-        openStatusDialog({
-          title: '缺少必填欄位',
-          description: '文章標題不能為空',
-          status: 'error',
-        });
-        return;
-      }
-
-      if (!formData.content || formData.content.trim() === '') {
-        openStatusDialog({
-          title: '缺少必填欄位',
-          description: '文章內容不能為空',
-          status: 'error',
-        });
-        return;
-      }
-
-      if (!formData.images || formData.images.length === 0) {
-        openStatusDialog({
-          title: '缺少必填欄位',
-          description: '至少需要上傳一張照片',
-          status: 'error',
-        });
-        return;
+      // 提交前驗證：編輯模式必須有 id
+      if (type === 'edit') {
+        if (!formData.id || !id) {
+          openStatusDialog({
+            title: '缺少必填欄位',
+            description: '編輯文章時必須提供文章 ID',
+            status: 'error',
+          });
+          return;
+        }
       }
 
       // 1. 先上傳新的圖片（有 file 屬性的）
@@ -110,7 +92,7 @@ export default function PostPage({ type }: PostPageProps) {
         return img.file;
       });
 
-      let uploadedImages: PostImageInput[] = [];
+      let uploadedImages: PostImageType[] = [];
       if (newImages.length > 0) {
         const files = newImages.map((img) => {
           return img.file!;
@@ -119,24 +101,23 @@ export default function PostPage({ type }: PostPageProps) {
 
         uploadedImages = uploadResult.data!.images.map((img, index) => {
           return {
+            id: crypto.randomUUID(),
             filename: img.filename,
             path: img.path,
             url: img.url,
             size: img.size,
             mimeType: img.mimeType,
-            order: formData.images.findIndex((item) => {
-              return item.file === files[index];
-            }),
+            order: index,
           };
         });
       }
 
       // 2. 組合現有圖片和新上傳的圖片
-      const existingImages: PostImageInput[] = formData.images
+      const existingImages: PostImageType[] = formData.images
         .filter((img) => {
           return !img.file;
         })
-        .map((img, index) => {
+        .map((img) => {
           return {
             id: img.id,
             filename: '',
@@ -153,15 +134,16 @@ export default function PostPage({ type }: PostPageProps) {
       });
 
       // 3. 建立或更新文章
-      const postData = {
+      const postPayload = {
         title: formData.title,
         content: formData.content,
         images: allImages,
       };
+
       if (type === 'create') {
-        createPost(postData);
+        createPost(postPayload);
       } else if (type === 'edit' && id) {
-        updatePost({ ...postData, id });
+        updatePost({ ...postPayload, id });
       }
 
       // 4. 導向文章列表

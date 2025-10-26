@@ -17,17 +17,15 @@ import {
 import { Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SortableImageItem } from './sortableImageItem';
-import { type ImageItem } from './type';
-
-type ImageUploadManagerProps = {
-  images: ImageItem[];
-  onImagesChange: (images: ImageItem[]) => void;
-};
+import { type PostFormImageType } from '@/server/posts/shared.type';
 
 export function ImageUploadManager({
   images,
   onImagesChange,
-}: ImageUploadManagerProps) {
+}: {
+  images: PostFormImageType[];
+  onImagesChange: (images: PostFormImageType[]) => void;
+}) {
   const [isDragging, setIsDragging] = useState(false);
 
   const sensors = useSensors(
@@ -56,11 +54,16 @@ export function ImageUploadManager({
     const files = event.target.files;
     if (!files) return;
 
-    const newImages: ImageItem[] = Array.from(files).map((file) => {
+    const newImages: PostFormImageType[] = Array.from(files).map((file, index) => {
       return {
-        id: `${Date.now()}-${Math.random()}`,
+        id: crypto.randomUUID(),
+        filename: file.name,
+        path: file.name,
         url: URL.createObjectURL(file),
-        file,
+        size: file.size,
+        mimeType: file.type,
+        order: images.length + index,
+        file: file, // 保留 file 對象用於上傳
       };
     });
 
@@ -92,11 +95,16 @@ export function ImageUploadManager({
     const files = e.dataTransfer.files;
     if (!files) return;
 
-    const newImages: ImageItem[] = Array.from(files).map((file) => {
+    const newImages: PostFormImageType[] = Array.from(files).map((file, index) => {
       return {
-        id: `${Date.now()}-${Math.random()}`,
+        id: crypto.randomUUID(),
+        filename: file.name,
+        path: file.name,
         url: URL.createObjectURL(file),
-        file,
+        size: file.size,
+        mimeType: file.type,
+        order: images.length + index,
+        file: file, // 保留 file 對象用於上傳
       };
     });
 

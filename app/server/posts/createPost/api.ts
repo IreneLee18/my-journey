@@ -1,4 +1,4 @@
-import type { CreatePostInput } from './type';
+import type { CreatePostType } from './type';
 
 type Post = {
   id: string;
@@ -22,7 +22,7 @@ type PostResponse = {
 };
 
 export const createPostApi = async (
-  postData: CreatePostInput
+  postData: CreatePostType
 ): Promise<PostResponse> => {
   const response = await fetch('/api/posts/create', {
     method: 'POST',

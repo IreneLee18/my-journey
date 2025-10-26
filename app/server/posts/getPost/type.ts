@@ -4,6 +4,9 @@ export const postImageSchema = z.object({
   id: z.string(),
   url: z.string(),
   filename: z.string(),
+  path: z.string(),
+  size: z.number(),
+  mimeType: z.string(),
   order: z.number(),
 });
 

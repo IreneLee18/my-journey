@@ -3,13 +3,13 @@ import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
-import type { ImageItem } from './type';
+import type { PostFormImageType } from '@/server/posts/shared.type';
 
 export function SortableImageItem({
   image,
   onDelete,
 }: {
-  image: ImageItem;
+  image: PostFormImageType;
   onDelete: () => void;
 }) {
   const {

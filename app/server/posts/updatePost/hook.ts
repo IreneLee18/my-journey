@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updatePostApi } from './api';
-import type { UpdatePostInput } from './type';
+import type { UpdatePostType } from './type';
 import { toast } from 'sonner';
 
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (postData: UpdatePostInput) => {
+    mutationFn: (postData: UpdatePostType) => {
       return updatePostApi(postData);
     },
     onSuccess: (data) => {

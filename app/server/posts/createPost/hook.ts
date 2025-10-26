@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createPostApi } from './api';
-import type { CreatePostInput } from './type';
+import type { CreatePostType } from './type';
 import { toast } from 'sonner';
 
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (postData: CreatePostInput) => {
+    mutationFn: (postData: CreatePostType) => {
       return createPostApi(postData);
     },
     onSuccess: () => {

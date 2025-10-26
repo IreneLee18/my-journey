@@ -1,4 +1,4 @@
-import type { UpdatePostInput } from './type';
+import type { UpdatePostType } from './type';
 
 type Post = {
   id: string;
@@ -22,7 +22,7 @@ type PostResponse = {
 };
 
 export const updatePostApi = async (
-  postData: UpdatePostInput
+  postData: UpdatePostType
 ): Promise<PostResponse> => {
   const response = await fetch('/api/posts/update', {
     method: 'POST',
