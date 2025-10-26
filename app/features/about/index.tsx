@@ -18,7 +18,7 @@ const titles: Record<string, { icon: string; title: string }> = {
 
 const Title = ({ icon, title }: { icon: string; title: string }) => {
   return (
-    <h2 className="text-2xl font-semibold flex items-center gap-2">
+    <h2 className="lg:text-2xl md:text-xl text-lg font-semibold flex items-center gap-2">
       <span>{icon}</span>
       <span>{title}</span>
     </h2>

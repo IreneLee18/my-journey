@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
 
 export default function Homepage() {
-  const text = 'Hi this is Irene, Welcome to my journey.';
+  // 桌机版：完整文字
+  const desktopText = 'Hi this is Irene, Welcome to my journey.';
+  // 手机版：分成两行
+  const mobileTextLine1 = 'Hi this is Irene,';
+  const mobileTextLine2 = 'Welcome to my journey.';
   
   const container = {
     hidden: { opacity: 0 },
@@ -27,28 +31,51 @@ export default function Homepage() {
     },
   };
 
+  const renderAnimatedText = (text: string) => {
+    return text.split('').map((char, index) => {
+      return (
+        <motion.span
+          key={`${char}-${index}`}
+          variants={child}
+          className="inline-block"
+          style={{ display: char === ' ' ? 'inline' : 'inline-block' }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      );
+    });
+  };
+
   return (
-    <div className="container flex-1 flex items-center justify-center">
+    <div className="container flex-1 flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
+        {/* 桌机版：完整文字，不分行 */}
+        <h1 className="hidden md:block md:text-4xl lg:text-6xl font-bold mb-4">
           <motion.span
             variants={container}
             initial="hidden"
             animate="visible"
             className="inline-block"
           >
-            {text.split('').map((char, index) => {
-              return (
-                <motion.span
-                  key={`${char}-${index}`}
-                  variants={child}
-                  className="inline-block"
-                  style={{ display: char === ' ' ? 'inline' : 'inline-block' }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
-              );
-            })}
+            {renderAnimatedText(desktopText)}
+          </motion.span>
+        </h1>
+
+
+        {/* 手机版：文字变小且分行 */}
+        <h1 className="block md:hidden text-2xl font-bold mb-4">
+          <motion.span
+            variants={container}
+            initial="hidden"
+            animate="visible"
+            className="block"
+          >
+            <span className="block mb-2">
+              {renderAnimatedText(mobileTextLine1)}
+            </span>
+            <span className="block">
+              {renderAnimatedText(mobileTextLine2)}
+            </span>
           </motion.span>
         </h1>
       </div>
