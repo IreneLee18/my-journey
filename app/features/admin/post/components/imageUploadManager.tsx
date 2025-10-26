@@ -12,77 +12,17 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  useSortable,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { Trash2, Upload } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-
-type ImageItem = {
-  id: string;
-  url: string;
-  file?: File;
-}
+import { SortableImageItem } from './sortableImageItem';
+import { type ImageItem } from './type';
 
 type ImageUploadManagerProps = {
   images: ImageItem[];
   onImagesChange: (images: ImageItem[]) => void;
-}
-
-function SortableImageItem({
-  image,
-  onDelete,
-}: {
-  image: ImageItem;
-  onDelete: () => void;
-}) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: image.id,
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className={cn(
-        'relative aspect-square overflow-hidden rounded-lg border-2 border-gray-200 bg-white cursor-move group',
-        isDragging && 'opacity-50 z-50'
-      )}
-    >
-      <img src={image.url} alt="" className="h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-        <Button
-          type="button"
-          size="sm"
-          variant="destructive"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-          className="pointer-events-auto"
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </div>
-    </div>
-  );
-}
+};
 
 export function ImageUploadManager({
   images,
@@ -165,7 +105,6 @@ export function ImageUploadManager({
 
   return (
     <div className="w-full space-y-4">
-      {/* Upload Area */}
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -173,8 +112,8 @@ export function ImageUploadManager({
         className={cn(
           'relative rounded-lg border-2 border-dashed p-8 text-center transition-colors',
           isDragging
-            ? 'border-primary bg-primary/10'
-            : 'border-gray-300 hover:border-gray-400'
+            ? 'border-primary bg-primary/10 dark:bg-primary/20'
+            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
         )}
       >
         <input
@@ -189,18 +128,19 @@ export function ImageUploadManager({
           htmlFor="image-upload"
           className="flex flex-col items-center justify-center cursor-pointer"
         >
-          <Upload className="h-12 w-12 text-gray-400 mb-4" />
-          <p className="text-lg font-semibold text-gray-700 mb-2">
+          <Upload className="h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" />
+          <p className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
             點擊上傳或拖曳圖片到此處
           </p>
-          <p className="text-sm text-gray-500">支援多選檔案</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            支援多選檔案
+          </p>
         </label>
       </div>
 
-      {/* Images Grid */}
       {images.length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             已上傳 {images.length} 張圖片（可拖拉排序）
           </p>
           <DndContext
