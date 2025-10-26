@@ -23,6 +23,7 @@ export default [
     route('posts/delete', 'routes/api/posts/delete.tsx'),
     route('posts/:id', 'routes/api/posts/get-one.tsx'),
     route('upload-images', 'routes/api/upload-images.tsx'),
+    route('health', 'routes/api/health.tsx'),
   ]),
   ...prefix('admin', [
     layout('routes/admin/layout.tsx', [
