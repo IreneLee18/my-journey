@@ -45,7 +45,7 @@ export const postApiBaseSchema = z.object({
 
 // 匯出類型
 export type PostImageType = z.infer<typeof postImageInputSchema>;
-export type PostFormImageType = z.infer<typeof postFormImageSchema>;
-export type PostFormType = z.infer<typeof postFormSchema>;
+export type PostFormImageValues = z.infer<typeof postFormImageSchema>;
+export type PostFormValues = z.infer<typeof postFormSchema>;
 export type PostApiBaseType = z.infer<typeof postApiBaseSchema>;
 

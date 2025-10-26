@@ -14,7 +14,7 @@ import { useUploadImages } from '@/server/upload/hooks';
 import { useEffect } from 'react';
 import {
   postFormSchema,
-  type PostFormType,
+  type PostFormValues,
   type PostImageType,
 } from '@/server/posts/shared.type';
 import { useStatusDialogState } from '@/utils/statusDialogState';
@@ -35,7 +35,7 @@ export default function PostPage({ type }: PostPageProps) {
     type === 'edit' ? id : undefined
   );
 
-  const form = useForm<PostFormType>({
+  const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
     defaultValues: {
       title: '',
@@ -73,7 +73,7 @@ export default function PostPage({ type }: PostPageProps) {
     return navigate('/admin/posts');
   };
 
-  const onSubmit = async (formData: PostFormType) => {
+  const onSubmit = async (formData: PostFormValues) => {
     try {
       // 提交前驗證：編輯模式必須有 id
       if (type === 'edit') {

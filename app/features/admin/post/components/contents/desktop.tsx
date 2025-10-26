@@ -1,12 +1,12 @@
 import { ImageUploadManager } from '../imageUploadManager';
 import { ArticleEditor } from '../articleEditor';
 import { type UseFormReturn } from 'react-hook-form';
-import { type PostFormType, type PostFormImageType } from '@/server/posts/shared.type';
+import { type PostFormValues, type PostFormImageValues } from '@/server/posts/shared.type';
 
-export function DesktopContent({ form }: { form: UseFormReturn<PostFormType> }) {
+export function DesktopContent({ form }: { form: UseFormReturn<PostFormValues> }) {
   const images = form.watch('images');
   const content = form.watch('content');
-  const onImagesChange = (images: PostFormImageType[]) => {
+  const onImagesChange = (images: PostFormImageValues[]) => {
     form.setValue('images', images);
   };
   const onContentChange = (content: string) => {

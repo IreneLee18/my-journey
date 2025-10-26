@@ -17,14 +17,14 @@ import {
 import { Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SortableImageItem } from './sortableImageItem';
-import { type PostFormImageType } from '@/server/posts/shared.type';
+import { type PostFormImageValues } from '@/server/posts/shared.type';
 
 export function ImageUploadManager({
   images,
   onImagesChange,
 }: {
-  images: PostFormImageType[];
-  onImagesChange: (images: PostFormImageType[]) => void;
+  images: PostFormImageValues[];
+  onImagesChange: (images: PostFormImageValues[]) => void;
 }) {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -54,7 +54,7 @@ export function ImageUploadManager({
     const files = event.target.files;
     if (!files) return;
 
-    const newImages: PostFormImageType[] = Array.from(files).map((file, index) => {
+    const newImages: PostFormImageValues[] = Array.from(files).map((file, index) => {
       return {
         id: crypto.randomUUID(),
         filename: file.name,
@@ -95,7 +95,7 @@ export function ImageUploadManager({
     const files = e.dataTransfer.files;
     if (!files) return;
 
-    const newImages: PostFormImageType[] = Array.from(files).map((file, index) => {
+    const newImages: PostFormImageValues[] = Array.from(files).map((file, index) => {
       return {
         id: crypto.randomUUID(),
         filename: file.name,
