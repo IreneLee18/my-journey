@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "react-router build",
+    "build": "npm run prisma:generate && react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
@@ -12,7 +12,10 @@
     "prisma:merge": "tsx scripts/merge-prisma-models.ts",
     "prisma:generate": "npm run prisma:merge && prisma generate",
     "prisma:push": "npm run prisma:merge && prisma db push",
-    "prisma:studio": "npm run prisma:merge && prisma studio"
+    "prisma:migrate:dev": "npm run prisma:merge && prisma migrate dev",
+    "prisma:migrate:deploy": "npm run prisma:merge && prisma migrate deploy",
+    "prisma:studio": "npm run prisma:merge && prisma studio",
+    "vercel-build": "npm run prisma:migrate:deploy && npm run build"
   },
   "config": {
     "commitizen": {
@@ -33,6 +36,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
+    "@supabase/supabase-js": "^2.76.1",
     "@tanstack/react-query": "^5.90.5",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",

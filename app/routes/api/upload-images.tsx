@@ -1,7 +1,6 @@
 import type { ActionFunctionArgs } from 'react-router';
 import { data } from 'react-router';
-import { uploadImages } from '@/lib/file-upload.server';
-import { z } from 'zod';
+import { uploadImages } from '@/lib/storage.server';
 
 const MAX_FILES = 10;
 

@@ -3,7 +3,7 @@ import { data } from 'react-router';
 import { ZodError } from 'zod';
 import { prisma } from '@/lib/prisma.server';
 import { updatePostSchema } from '@/server/posts/updatePost/type';
-import { deleteImage } from '@/lib/file-upload.server';
+import { deleteImage } from '@/lib/storage.server';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
