@@ -11,3 +11,45 @@ datasource db {
   url      = env("DATABASE_URL")
   directUrl = env("DIRECT_DATABASE_URL")
 }
+
+// From: Post.prisma
+model Post {
+  id          String      @id @default(uuid())
+  title       String
+  content     String?     // 文章內容（HTML 格式）
+  publishDate DateTime    @default(now())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  images PostImage[]
+}
+
+
+// From: PostImage.prisma
+model PostImage {
+  id        String   @id @default(uuid())
+  postId    String
+  filename  String   // 原始檔名
+  path      String   // 存儲路徑（相對於 public/）
+  url       String   // 訪問 URL
+  size      Int      // 檔案大小（bytes）
+  mimeType  String   // MIME type (image/jpeg, image/png, etc.)
+  order     Int      @default(0) // 排序順序
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@map("post_images")
+}
+
+
+// From: User.prisma
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
