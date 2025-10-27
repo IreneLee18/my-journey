@@ -171,9 +171,9 @@ export const translations: Record<Language, Translations> = {
     'about.description': '關於此網站的描述',
     
     // Home Page
-    'home.greeting.desktop': 'Hi this is Irene, Welcome to my journey.',
-    'home.greeting.mobile.line1': 'Hi this is Irene,',
-    'home.greeting.mobile.line2': 'Welcome to my journey.',
+    'home.greeting.desktop': '嗨，我是 Irene，歡迎來到我的旅程。',
+    'home.greeting.mobile.line1': '嗨，我是 Irene',
+    'home.greeting.mobile.line2': '歡迎來到我的旅程',
     
     // About Page
     'about.page.title': '關於',

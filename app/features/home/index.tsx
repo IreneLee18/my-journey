@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from '@/i18n/useTranslation';
 
 export default function Homepage() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   
   // 桌机版：完整文字
   const desktopText = t('home.greeting.desktop');
@@ -55,6 +55,7 @@ export default function Homepage() {
         {/* 桌机版：完整文字，不分行 */}
         <h1 className="hidden md:block md:text-4xl lg:text-6xl font-bold mb-4">
           <motion.span
+            key={`desktop-${language}`}
             variants={container}
             initial="hidden"
             animate="visible"
@@ -68,6 +69,7 @@ export default function Homepage() {
         {/* 手机版：文字变小且分行 */}
         <h1 className="block md:hidden text-2xl font-bold mb-4">
           <motion.span
+            key={`mobile-${language}`}
             variants={container}
             initial="hidden"
             animate="visible"
