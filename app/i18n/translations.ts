@@ -49,7 +49,7 @@ export type TranslationKey =
   
   // Post Detail
   | 'post.back'
-  | 'post.publishedOn'
+  | 'post.publishDate'
   | 'post.updatedOn'
   
   // Login
@@ -155,7 +155,7 @@ export const translations: Record<Language, Translations> = {
     
     // Post Detail
     'post.back': '返回文章列表',
-    'post.publishedOn': '發佈於',
+    'post.publishDate': '發佈日期',
     'post.updatedOn': '更新於',
     
     // Login
@@ -256,7 +256,7 @@ export const translations: Record<Language, Translations> = {
     
     // Post Detail
     'post.back': 'Back to Posts',
-    'post.publishedOn': 'Published on',
+    'post.publishDate': 'Published Date',
     'post.updatedOn': 'Updated on',
     
     // Login

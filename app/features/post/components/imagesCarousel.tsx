@@ -44,11 +44,12 @@ export function ImagesCarousel({ images }: ImagesCarouselProps) {
           {images.map((image, index) => {
             return (
               <CarouselItem key={index}>
-                <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-100">
+                <div className="relative aspect-video w-full rounded-lg bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center overflow-hidden">
                   <img
                     src={image}
                     alt={`Slide ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-90 transition-opacity"
+                    onClick={scrollTo(index)}
                   />
                 </div>
               </CarouselItem>

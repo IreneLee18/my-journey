@@ -71,8 +71,8 @@ export function ArticleEditor({ value, onChange }: ArticleEditorProps) {
   }
 
   return (
-    <div className="w-full h-[calc(100%-16px)]">
-      <div className="h-[calc(100%-16px)] flex flex-col bg-white dark:bg-gray-900 rounded-lg border border-gray-300 dark:border-gray-700">
+    <div className="w-full h-96 md:h-full">
+      <div className="h-96 md:h-full flex flex-col bg-white dark:bg-gray-900 rounded-lg border border-gray-300 dark:border-gray-700">
         <EditorMenubar editor={editor} />
 
         {/* Editor Content */}

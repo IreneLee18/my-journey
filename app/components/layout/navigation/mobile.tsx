@@ -12,7 +12,7 @@ type MobileNavigationProps = {
   closeMobileMenu: () => void;
   toggleTheme: () => void;
   toggleLanguage: () => void;
-}
+};
 
 export default function MobileNavigation({
   isMobileMenuOpen,
@@ -98,8 +98,9 @@ export default function MobileNavigation({
               onClick={toggleLanguage}
               title={t('header.toggleLanguage')}
             >
-              <Languages />
-              <span className="ml-1 text-sm font-medium">{language.toUpperCase()}</span>
+              <span className="text-sm font-medium">
+                {language.toUpperCase()}
+              </span>
             </Button>
             <Button
               size="icon"
