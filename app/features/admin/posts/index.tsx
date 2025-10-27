@@ -9,6 +9,7 @@ import { Plus } from 'lucide-react';
 import { useStatusDialogState } from '@/utils/statusDialogState';
 import { useGetPosts } from '@/server/posts/getPosts/hook';
 import { useDeletePost } from '@/server/posts/deletePost/hook';
+import { MobilePostCard } from './mobileCard';
 
 export default function AdminPosts() {
   const { openStatusDialog } = useStatusDialogState();
@@ -44,6 +45,8 @@ export default function AdminPosts() {
     );
   }
 
+  const posts = data?.data?.posts || [];
+
   return (
     <PageLayout
       title="文章管理"
@@ -57,10 +60,25 @@ export default function AdminPosts() {
         </Link>
       }
     >
-      <DataTable
-        data={data?.data?.posts || []}
-        columns={getColumns({ onDelete })}
-      />
+      {/* 桌面版：顯示 DataTable */}
+      <div className="hidden md:block">
+        <DataTable data={posts} columns={getColumns({ onDelete })} />
+      </div>
+
+      {/* 手機版：顯示卡片列表 */}
+      <div className="md:hidden space-y-4">
+        {posts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+            <span className="text-lg">無資料</span>
+          </div>
+        ) : (
+          posts.map((post) => {
+            return (
+              <MobilePostCard key={post.id} post={post} onDelete={onDelete} />
+            );
+          })
+        )}
+      </div>
     </PageLayout>
   );
 }

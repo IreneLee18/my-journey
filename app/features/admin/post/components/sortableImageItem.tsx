@@ -47,8 +47,8 @@ export function SortableImageItem({
         />
       </div>
 
-      {/* 刪除按鈕覆蓋層 */}
-      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+      {/* 桌面版：hover 時顯示刪除按鈕（中央） */}
+      <div className="hidden md:flex absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity items-center justify-center pointer-events-none">
         <Button
           type="button"
           size="sm"
@@ -62,6 +62,26 @@ export function SortableImageItem({
             e.stopPropagation();
           }}
           className="pointer-events-auto"
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {/* 手機/平板版：刪除按鈕固定在右上角 */}
+      <div className="md:hidden absolute top-2 right-2 z-10">
+        <Button
+          type="button"
+          size="icon"
+          variant="destructive"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onDelete();
+          }}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+          }}
+          className="h-8 w-8 rounded-full shadow-lg"
         >
           <Trash2 className="h-4 w-4" />
         </Button>
