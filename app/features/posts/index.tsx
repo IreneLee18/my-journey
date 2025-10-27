@@ -3,8 +3,10 @@ import { PageLayout } from '@/components/customs/pageLayout';
 import { PostCard } from './components/postCard';
 import { PaginationGroup } from '@/components/customs/paginationGroup';
 import { useGetPosts } from '@/server/posts/getPosts/hook';
+import { useTranslation } from '@/i18n/useTranslation';
 
 export default function PostsPage() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useState({ page: 1, size: 12 });
 
   const { data, isLoading, error } = useGetPosts({
@@ -24,9 +26,9 @@ export default function PostsPage() {
 
   if (isLoading) {
     return (
-      <PageLayout title="Posts" className="flex flex-col gap-8">
+      <PageLayout title={t('nav.posts')} className="flex flex-col gap-8">
         <div className="text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">載入中...</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('posts.loading')}</p>
         </div>
       </PageLayout>
     );
@@ -34,9 +36,9 @@ export default function PostsPage() {
 
   if (error) {
     return (
-      <PageLayout title="Posts" className="flex flex-col gap-8">
+      <PageLayout title={t('nav.posts')} className="flex flex-col gap-8">
         <div className="text-center py-12">
-          <p className="text-red-500">錯誤：{error.message}</p>
+          <p className="text-red-500">{t('posts.error')}：{error.message}</p>
         </div>
       </PageLayout>
     );
@@ -46,10 +48,10 @@ export default function PostsPage() {
   const total = data?.data?.total || 0;
 
   return (
-    <PageLayout title="Posts" className="flex flex-col gap-8">
+    <PageLayout title={t('nav.posts')} className="flex flex-col gap-8">
       {posts.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">尚無文章</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('posts.empty')}</p>
         </div>
       ) : (
         <>

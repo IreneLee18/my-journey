@@ -3,8 +3,10 @@ import { useNavigate, useParams } from 'react-router';
 import { Article } from './components/article';
 import { ImagesCarousel } from './components/imagesCarousel';
 import { useGetPost } from '@/server/posts/getPost/hook';
+import { useTranslation } from '@/i18n/useTranslation';
 
 export default function PostPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   
@@ -13,13 +15,13 @@ export default function PostPage() {
   if (isLoading) {
     return (
       <PageLayout
-        title="載入中..."
+        title={t('post.loading')}
         className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
         goBack={() => { return navigate('/posts'); }}
-        goBackString="Go Back To Posts"
+        goBackString={t('post.goBack')}
       >
         <div className="col-span-full text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">載入中...</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('post.loading')}</p>
         </div>
       </PageLayout>
     );
@@ -28,13 +30,13 @@ export default function PostPage() {
   if (error) {
     return (
       <PageLayout
-        title="錯誤"
+        title={t('post.error')}
         className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
         goBack={() => { return navigate('/posts'); }}
-        goBackString="Go Back To Posts"
+        goBackString={t('post.goBack')}
       >
         <div className="col-span-full text-center py-12">
-          <p className="text-red-500">錯誤：{error.message}</p>
+          <p className="text-red-500">{t('post.error')}：{error.message}</p>
         </div>
       </PageLayout>
     );
@@ -45,13 +47,13 @@ export default function PostPage() {
   if (!post) {
     return (
       <PageLayout
-        title="找不到文章"
+        title={t('post.notFound')}
         className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
         goBack={() => { return navigate('/posts'); }}
-        goBackString="Go Back To Posts"
+        goBackString={t('post.goBack')}
       >
         <div className="col-span-full text-center py-12">
-          <p className="text-gray-500 dark:text-gray-400">找不到文章</p>
+          <p className="text-gray-500 dark:text-gray-400">{t('post.notFound')}</p>
         </div>
       </PageLayout>
     );
@@ -66,7 +68,7 @@ export default function PostPage() {
       title={post.title}
       className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
       goBack={() => { return navigate('/posts'); }}
-      goBackString="Go Back To Posts"
+      goBackString={t('post.goBack')}
     >
       <ImagesCarousel images={images} />
       <Article publishDate={post.publishDate} content={post.content || ''} />

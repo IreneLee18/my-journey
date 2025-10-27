@@ -1,11 +1,14 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/i18n/useTranslation';
 
 export default function Homepage() {
+  const { t } = useTranslation();
+  
   // 桌机版：完整文字
-  const desktopText = 'Hi this is Irene, Welcome to my journey.';
+  const desktopText = t('home.greeting.desktop');
   // 手机版：分成两行
-  const mobileTextLine1 = 'Hi this is Irene,';
-  const mobileTextLine2 = 'Welcome to my journey.';
+  const mobileTextLine1 = t('home.greeting.mobile.line1');
+  const mobileTextLine2 = t('home.greeting.mobile.line2');
   
   const container = {
     hidden: { opacity: 0 },

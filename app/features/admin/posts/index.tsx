@@ -9,7 +9,6 @@ import { Plus } from 'lucide-react';
 import { useStatusDialogState } from '@/utils/statusDialogState';
 import { useGetPosts } from '@/server/posts/getPosts/hook';
 import { useDeletePost } from '@/server/posts/deletePost/hook';
-import { toast } from 'sonner';
 
 export default function AdminPosts() {
   const { openStatusDialog } = useStatusDialogState();
@@ -18,11 +17,11 @@ export default function AdminPosts() {
 
   const onDelete = (id: string) => {
     openStatusDialog({
-      title: 'Delete Post',
-      description: 'Are you sure you want to delete this post?',
+      title: '刪除文章',
+      description: '確定要刪除此文章嗎？',
       status: 'delete',
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
+      confirmText: '刪除',
+      cancelText: '取消',
       onConfirm: () => {
         deletePost({ id });
       },
@@ -31,30 +30,30 @@ export default function AdminPosts() {
 
   if (isLoading) {
     return (
-      <PageLayout title="Posts">
-        <div>Loading...</div>
+      <PageLayout title="文章管理">
+        <div>載入中...</div>
       </PageLayout>
     );
   }
 
   if (error) {
     return (
-      <PageLayout title="Posts">
-        <div>Error: {error.message}</div>
+      <PageLayout title="文章管理">
+        <div>錯誤: {error.message}</div>
       </PageLayout>
     );
   }
 
   return (
     <PageLayout
-      title="Posts"
+      title="文章管理"
       customActions={
         <Link
           to={adminPaths.postCreate.url}
           className={cn(buttonVariants({ variant: 'outline' }))}
         >
           <Plus />
-          New Post
+          新增文章
         </Link>
       }
     >

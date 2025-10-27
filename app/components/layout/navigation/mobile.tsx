@@ -1,20 +1,28 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
-import { Sun, User, Moon, Settings } from 'lucide-react';
+import { Sun, User, Moon, Settings, Languages } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
+import { useLanguage } from '@/hooks/useLanguage';
 import { useAuthStore } from '@/stores/authStore';
+import { useTranslation } from '@/i18n/useTranslation';
 
 type MobileNavigationProps = {
   isMobileMenuOpen: boolean;
   closeMobileMenu: () => void;
+  toggleTheme: () => void;
+  toggleLanguage: () => void;
 }
 
 export default function MobileNavigation({
   isMobileMenuOpen,
   closeMobileMenu,
+  toggleTheme,
+  toggleLanguage,
 }: MobileNavigationProps) {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
+  const { language } = useLanguage();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
 
@@ -67,7 +75,7 @@ export default function MobileNavigation({
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 font-medium transition-colors py-2 block"
               onClick={closeMobileMenu}
             >
-              Posts
+              {t('nav.posts')}
             </Link>
           </motion.div>
           <motion.div variants={mobileLinkVariants}>
@@ -76,7 +84,7 @@ export default function MobileNavigation({
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 font-medium transition-colors py-2 block"
               onClick={closeMobileMenu}
             >
-              About
+              {t('about.title')}
             </Link>
           </motion.div>
           <motion.div
@@ -86,8 +94,19 @@ export default function MobileNavigation({
             <Button
               size="icon"
               variant="iconGhost"
-              aria-label="Toggle theme"
+              aria-label={t('header.toggleLanguage')}
+              onClick={toggleLanguage}
+              title={t('header.toggleLanguage')}
+            >
+              <Languages />
+              <span className="ml-1 text-sm font-medium">{language.toUpperCase()}</span>
+            </Button>
+            <Button
+              size="icon"
+              variant="iconGhost"
+              aria-label={t('header.toggleTheme')}
               onClick={toggleTheme}
+              title={t('header.toggleTheme')}
             >
               {theme === 'dark' ? <Moon /> : <Sun />}
             </Button>

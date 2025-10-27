@@ -18,7 +18,7 @@ export const getColumns = ({
   return [
     {
       accessorKey: 'title',
-      header: 'Title',
+      header: '標題',
       cell: (row) => {
         const { title } = row.row.original;
         return <span>{title}</span>;
@@ -26,7 +26,7 @@ export const getColumns = ({
     },
     {
       accessorKey: 'images',
-      header: 'Image',
+      header: '圖片',
       cell: (row) => {
         const { images, title } = row.row.original;
         // 顯示第一張圖片（如果有的話）
@@ -46,7 +46,7 @@ export const getColumns = ({
     },
     {
       accessorKey: 'publishDate',
-      header: 'Publish Date',
+      header: '發佈日期',
       cell: (row) => {
         const { publishDate } = row.row.original;
         return <span>{formatDate(publishDate, 'yyyy/MM/dd')}</span>;
@@ -58,7 +58,7 @@ export const getColumns = ({
       meta: {
         className: 'text-right',
       },
-      header: 'Action',
+      header: '操作',
       cell: (row) => {
         const { id } = row.row.original;
         return (
@@ -75,7 +75,9 @@ export const getColumns = ({
             <Button
               variant="outline"
               className="w-1/2"
-              onClick={() => onDelete(id)}
+              onClick={() => {
+                return onDelete(id);
+              }}
             >
               <TrashIcon />
               刪除

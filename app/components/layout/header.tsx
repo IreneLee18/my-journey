@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, User, Menu, X, Moon, Settings } from 'lucide-react';
+import { Sun, User, Menu, X, Moon, Settings, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router';
 import DesktopNavigation from './navigation/desktop';
 import MobileNavigation from './navigation/mobile';
 import { useTheme } from '@/hooks/useTheme';
 import { useAuthStore } from '@/stores/authStore';
+import { useLanguage } from '@/hooks/useLanguage';
+import { useTranslation } from '@/i18n/useTranslation';
 
 export function Header() {
   const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage } = useLanguage();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
@@ -34,7 +38,7 @@ export function Header() {
               className="hover:opacity-80 transition-opacity"
               onClick={closeMobileMenu}
             >
-              Irene Lee's Journey
+              {t('header.title')}
             </Link>
           </div>
 
@@ -44,9 +48,22 @@ export function Header() {
             <Button
               size="icon"
               variant="iconGhost"
-              aria-label="Toggle theme"
+              aria-label={t('header.toggleLanguage')}
+              className="hidden md:flex"
+              onClick={toggleLanguage}
+              title={t('header.toggleLanguage')}
+            >
+              <span className="text-sm font-medium">
+                {language.toUpperCase()}
+              </span>
+            </Button>
+            <Button
+              size="icon"
+              variant="iconGhost"
+              aria-label={t('header.toggleTheme')}
               className="hidden md:flex"
               onClick={toggleTheme}
+              title={t('header.toggleTheme')}
             >
               {theme === 'dark' ? <Moon /> : <Sun />}
             </Button>
@@ -67,7 +84,7 @@ export function Header() {
               <Button
                 size="icon"
                 variant="iconGhost"
-                aria-label="Toggle menu"
+                aria-label={t('admin.header.toggleMenu')}
                 onClick={toggleMobileMenu}
               >
                 <AnimatePresence mode="wait">
@@ -101,6 +118,8 @@ export function Header() {
         <MobileNavigation
           isMobileMenuOpen={isMobileMenuOpen}
           closeMobileMenu={closeMobileMenu}
+          toggleTheme={toggleTheme}
+          toggleLanguage={toggleLanguage}
         />
       </div>
     </header>

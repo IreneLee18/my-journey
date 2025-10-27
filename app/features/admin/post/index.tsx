@@ -160,7 +160,7 @@ export default function PostPage({ type }: PostPageProps) {
 
   if (type === 'edit' && isLoading) {
     return (
-      <PageLayout title="EDIT POST">
+      <PageLayout title="編輯文章">
         <div>載入中...</div>
       </PageLayout>
     );
@@ -168,12 +168,12 @@ export default function PostPage({ type }: PostPageProps) {
 
   return (
     <PageLayout
-      title={type === 'create' ? 'NEW POST' : 'EDIT POST'}
+      title={type === 'create' ? '建立文章' : '編輯文章'}
       className="space-y-4"
       goBack={() => {
         return navigate(adminPaths.posts.url);
       }}
-      goBackString="Go Back To Posts"
+      goBackString="返回文章列表"
     >
       <Form {...form} onSubmit={onSubmit}>
         {/* Title Input */}
@@ -190,11 +190,11 @@ export default function PostPage({ type }: PostPageProps) {
         <DesktopContent form={form} />
         <MobileContent form={form} />
 
-        <div className="flex justify-end gap-4 pt-6 border-t border-gray-200">
+        <div className="flex justify-end gap-4 pt-6 border-t border-gray-200 dark:border-gray-800">
           <Button variant="outline" onClick={onCancel}>
-            Cancel
+            取消
           </Button>
-          <Button type="submit">Save</Button>
+          <Button type="submit">儲存</Button>
         </div>
       </Form>
     </PageLayout>
