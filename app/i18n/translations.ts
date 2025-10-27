@@ -61,7 +61,6 @@ export type TranslationKey =
   
   // About
   | 'about.title'
-  | 'about.description'
   
   // Home Page
   | 'home.greeting.desktop'
@@ -167,8 +166,7 @@ export const translations: Record<Language, Translations> = {
     'login.error': '登入失敗',
     
     // About
-    'about.title': '關於我',
-    'about.description': '關於此網站的描述',
+    'about.title': '關於',
     
     // Home Page
     'home.greeting.desktop': '嗨，我是 Irene，歡迎來到我的旅程。',
@@ -270,7 +268,6 @@ export const translations: Record<Language, Translations> = {
     
     // About
     'about.title': 'About',
-    'about.description': 'Description about this website',
     
     // Home Page
     'home.greeting.desktop': 'Hi this is Irene, Welcome to my journey.',

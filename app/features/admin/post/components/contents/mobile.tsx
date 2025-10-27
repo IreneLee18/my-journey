@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImageUploadManager } from '../imageUploadManager';
-import { ArticleEditor } from '../articleEditor';
+import { ArticleEditor } from '../editor';
 import { type UseFormReturn } from 'react-hook-form';
 import type { PostFormValues, PostFormImageValues } from '@/server/posts/shared.type';
 
