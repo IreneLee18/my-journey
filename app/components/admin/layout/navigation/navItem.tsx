@@ -23,7 +23,7 @@ export function NavItem({ navItem, onClick }: NavItemComponentProps) {
       onClick={onClick}
     >
       {navItem.icon}
-      <span>{navItem.name}</span>
+      <span>{navItem.zhName}</span>
     </Link>
   );
 }

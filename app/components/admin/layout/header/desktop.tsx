@@ -39,7 +39,7 @@ export function DesktopHeader() {
             title="回到前台"
           >
             <Home className="w-5 h-5" />
-            Back to Frontend
+            回到前台
           </Button>
         </div>
       </div>

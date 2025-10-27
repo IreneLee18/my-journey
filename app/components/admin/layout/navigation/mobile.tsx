@@ -6,7 +6,6 @@ import { adminMenu } from '@/constants/menu';
 import { adminPaths, paths } from '@/constants/paths';
 import { NavItem } from './navItem';
 import { useLogout } from '@/server/auth/hook';
-import { useAuthStore } from '@/stores/authStore';
 import { useTheme } from '@/hooks/useTheme';
 
 type MobileNavigationProps = {
@@ -19,7 +18,6 @@ export default function MobileNavigation({
   closeMobileMenu,
 }: MobileNavigationProps) {
   const navigate = useNavigate();
-  const { onLogout } = useAuthStore();
   const { theme, toggleTheme } = useTheme();
 
   const { mutate: logoutMutation, isPending } = useLogout();
