@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { DataTable } from '@/components/customs/dataTable';
 import { PageLayout } from '@/components/customs/pageLayout';
 import { getColumns } from './table.config';
@@ -9,11 +10,16 @@ import { Plus } from 'lucide-react';
 import { useStatusDialogState } from '@/utils/statusDialogState';
 import { useGetPosts } from '@/server/posts/getPosts/hook';
 import { useDeletePost } from '@/server/posts/deletePost/hook';
-import { MobilePostCard } from './mobileCard';
+import { MobilePostList } from './mobileCard';
 
 export default function AdminPosts() {
   const { openStatusDialog } = useStatusDialogState();
-  const { data, isLoading, error } = useGetPosts({ page: 1, pageSize: 10 });
+  const [searchParams, setSearchParams] = useState({ page: 1, size: 10 });
+
+  const { data, isLoading, error } = useGetPosts({
+    page: searchParams.page,
+    pageSize: searchParams.size,
+  });
   const { mutate: deletePost } = useDeletePost();
 
   const onDelete = (id: string) => {
@@ -29,23 +35,12 @@ export default function AdminPosts() {
     });
   };
 
-  if (isLoading) {
-    return (
-      <PageLayout title="文章管理">
-        <div>載入中...</div>
-      </PageLayout>
-    );
-  }
-
-  if (error) {
-    return (
-      <PageLayout title="文章管理">
-        <div>錯誤: {error.message}</div>
-      </PageLayout>
-    );
-  }
+  const handlePageChange = (page: number) => {
+    setSearchParams({ ...searchParams, page });
+  };
 
   const posts = data?.data?.posts || [];
+  const total = data?.data?.total || 0;
 
   return (
     <PageLayout
@@ -60,24 +55,32 @@ export default function AdminPosts() {
         </Link>
       }
     >
-      {/* 桌面版：顯示 DataTable */}
       <div className="hidden md:block">
-        <DataTable data={posts} columns={getColumns({ onDelete })} />
+        <DataTable
+          data={posts}
+          columns={getColumns({ onDelete })}
+          isLoading={isLoading}
+          isError={error}
+          pagination={{
+            currentPage: searchParams.page,
+            pageSize: searchParams.size,
+            totalElements: total,
+            onPageChange: handlePageChange,
+          }}
+        />
       </div>
 
-      {/* 手機版：顯示卡片列表 */}
-      <div className="md:hidden space-y-4">
-        {posts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
-            <span className="text-lg">無資料</span>
-          </div>
-        ) : (
-          posts.map((post) => {
-            return (
-              <MobilePostCard key={post.id} post={post} onDelete={onDelete} />
-            );
-          })
-        )}
+      <div className="md:hidden">
+        <MobilePostList
+          posts={posts}
+          total={total}
+          isLoading={isLoading}
+          error={error}
+          currentPage={searchParams.page}
+          pageSize={searchParams.size}
+          onDelete={onDelete}
+          onPageChange={handlePageChange}
+        />
       </div>
     </PageLayout>
   );

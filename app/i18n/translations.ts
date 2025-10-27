@@ -94,6 +94,8 @@ export type TranslationKey =
   | 'posts.loading'
   | 'posts.error'
   | 'posts.empty'
+  | 'posts.totalResults'
+  | 'posts.articles'
   
   // Post Detail
   | 'post.loading'
@@ -200,6 +202,8 @@ export const translations: Record<Language, Translations> = {
     'posts.loading': '載入中...',
     'posts.error': '錯誤',
     'posts.empty': '尚無文章',
+    'posts.totalResults': '總共',
+    'posts.articles': '篇文章',
     
     // Post Detail
     'post.loading': '載入中...',
@@ -301,6 +305,8 @@ export const translations: Record<Language, Translations> = {
     'posts.loading': 'Loading...',
     'posts.error': 'Error',
     'posts.empty': 'No posts yet',
+    'posts.totalResults': 'Total',
+    'posts.articles': 'articles',
     
     // Post Detail
     'post.loading': 'Loading...',

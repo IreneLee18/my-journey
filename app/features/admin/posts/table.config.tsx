@@ -1,6 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { formatDate } from 'date-fns';
 import { Link } from 'react-router';
 import { adminPaths } from '@/constants/paths';
 import { cn } from '@/lib/utils';
@@ -49,7 +48,7 @@ export const getColumns = ({
       header: '發佈日期',
       cell: (row) => {
         const { publishDate } = row.row.original;
-        return <span>{formatDate(publishDate, 'yyyy/MM/dd')}</span>;
+        return <span>{publishDate}</span>;
       },
     },
     {

@@ -42,6 +42,15 @@ export default function PostsPage() {
   const posts = data?.data?.posts || [];
   const total = data?.data?.total || 0;
 
+  // Debug 資訊
+  console.log('📊 Posts Debug Info:', {
+    postsCount: posts.length,
+    total,
+    currentPage: searchParams.page,
+    pageSize: searchParams.size,
+    rawData: data,
+  });
+
   return (
     <PageLayout title={t('nav.posts')} className="flex flex-col gap-8">
       {posts.length === 0 ? (
