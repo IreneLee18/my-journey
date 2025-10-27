@@ -72,12 +72,12 @@ export function ImageUploadManager({
 
     try {
       // 壓縮所有圖片
+      // 使用預設配置：maxWidth: 1200, maxHeight: 1200, quality: 0.65, targetSizeKB: 500
+      // 針對 iPhone 大檔案照片會自動使用更激進的壓縮策略
       const compressedFiles = await compressImages({
         files: filesArray,
         options: {
-          maxWidth: 1920,
-          maxHeight: 1920,
-          quality: 0.8,
+          targetSizeKB: 500, // 目標壓縮到 500KB 以下
         },
         onProgress: (progress, current, total) => {
           setCompressionProgress({ progress, current, total });

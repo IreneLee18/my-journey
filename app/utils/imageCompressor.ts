@@ -10,13 +10,16 @@ type CompressionOptions = {
   quality?: number;
   /** 目標格式 */
   mimeType?: string;
+  /** 目標檔案大小上限（KB），如果設定會嘗試多次壓縮直到符合 */
+  targetSizeKB?: number;
 };
 
 const DEFAULT_OPTIONS: CompressionOptions = {
-  maxWidth: 1920,
-  maxHeight: 1920,
-  quality: 0.8,
+  maxWidth: 1200,
+  maxHeight: 1200,
+  quality: 0.65,
   mimeType: 'image/jpeg',
+  targetSizeKB: 500, // 目標壓縮到 500KB 以下
 };
 
 /**
@@ -46,11 +49,22 @@ export const compressImage = async ({
     reader.onload = (e) => {
       const img = new Image();
 
-      img.onload = () => {
+      img.onload = async () => {
+        // 根據原始檔案大小動態調整壓縮策略
+        const fileSizeMB = file.size / (1024 * 1024);
+        let currentQuality = config.quality || DEFAULT_OPTIONS.quality!;
+        let maxWidth = config.maxWidth || DEFAULT_OPTIONS.maxWidth!;
+        let maxHeight = config.maxHeight || DEFAULT_OPTIONS.maxHeight!;
+
+        // iPhone 高解析度照片（> 2MB）使用更激進的壓縮
+        if (fileSizeMB > 2) {
+          maxWidth = Math.min(maxWidth, 1200);
+          maxHeight = Math.min(maxHeight, 1200);
+          currentQuality = Math.min(currentQuality, 0.6);
+        }
+
         // 計算新的尺寸
         let { width, height } = img;
-        const maxWidth = config.maxWidth || DEFAULT_OPTIONS.maxWidth!;
-        const maxHeight = config.maxHeight || DEFAULT_OPTIONS.maxHeight!;
 
         if (width > maxWidth || height > maxHeight) {
           const ratio = Math.min(maxWidth / width, maxHeight / height);
@@ -58,44 +72,81 @@ export const compressImage = async ({
           height = Math.round(height * ratio);
         }
 
-        // 創建 canvas 並繪製壓縮後的圖片
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
+        // 嘗試壓縮函數
+        const tryCompress = (quality: number): Promise<Blob | null> => {
+          return new Promise((resolveBlob) => {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
 
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          reject(new Error('無法取得 canvas context'));
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+              resolveBlob(null);
+              return;
+            }
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(
+              (blob) => {
+                return resolveBlob(blob);
+              },
+              config.mimeType,
+              quality
+            );
+          });
+        };
+
+        // 如果設定了目標大小，嘗試多次壓縮
+        let finalBlob: Blob | null = null;
+        const targetSizeBytes = config.targetSizeKB
+          ? config.targetSizeKB * 1024
+          : null;
+
+        if (targetSizeBytes && fileSizeMB > 0.5) {
+          // 只對大於 500KB 的檔案進行多次嘗試
+          const qualities = [currentQuality, 0.55, 0.5, 0.45, 0.4];
+
+          for (const quality of qualities) {
+            const blob = await tryCompress(quality);
+            if (!blob) continue;
+
+            finalBlob = blob;
+
+            // 如果達到目標大小，就停止
+            if (blob.size <= targetSizeBytes) {
+              break;
+            }
+
+            // 如果檔案還是太大，嘗試進一步縮小尺寸
+            if (blob.size > targetSizeBytes && width > 800) {
+              width = Math.round(width * 0.8);
+              height = Math.round(height * 0.8);
+            }
+          }
+        } else {
+          // 一般情況直接壓縮一次
+          finalBlob = await tryCompress(currentQuality);
+        }
+
+        if (!finalBlob) {
+          reject(new Error('圖片壓縮失敗'));
           return;
         }
 
-        ctx.drawImage(img, 0, 0, width, height);
+        // 檢查壓縮後的檔案大小，如果反而更大則使用原始檔案
+        if (finalBlob.size > file.size) {
+          resolve(file);
+          return;
+        }
 
-        // 轉換為 Blob
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) {
-              reject(new Error('圖片壓縮失敗'));
-              return;
-            }
+        // 創建新的 File 物件
+        const compressedFile = new File([finalBlob], file.name, {
+          type: config.mimeType || file.type,
+          lastModified: Date.now(),
+        });
 
-            // 檢查壓縮後的檔案大小，如果反而更大則使用原始檔案
-            if (blob.size > file.size) {
-              resolve(file);
-              return;
-            }
-
-            // 創建新的 File 物件
-            const compressedFile = new File([blob], file.name, {
-              type: config.mimeType || file.type,
-              lastModified: Date.now(),
-            });
-
-            resolve(compressedFile);
-          },
-          config.mimeType,
-          config.quality
-        );
+        resolve(compressedFile);
       };
 
       img.onerror = () => {
