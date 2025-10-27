@@ -28,12 +28,15 @@ export default function PostPage({ type }: PostPageProps) {
   const { id } = useParams();
   const { openStatusDialog } = useStatusDialogState();
 
-  const { mutate: createPost } = useCreatePost();
-  const { mutate: updatePost } = useUpdatePost();
+  const { mutateAsync: createPost, isPending: isCreating } = useCreatePost();
+  const { mutateAsync: updatePost, isPending: isUpdating } = useUpdatePost();
   const uploadImages = useUploadImages();
   const { data: postData, isLoading } = useGetPost(
     type === 'edit' ? id : undefined
   );
+
+  // 檢查是否有任何 API 正在執行中
+  const isSubmitting = isCreating || isUpdating || uploadImages.isPending;
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
@@ -141,12 +144,12 @@ export default function PostPage({ type }: PostPageProps) {
       };
 
       if (type === 'create') {
-        createPost(postPayload);
+        await createPost(postPayload);
       } else if (type === 'edit' && id) {
-        updatePost({ ...postPayload, id });
+        await updatePost({ ...postPayload, id });
       }
 
-      // 4. 導向文章列表
+      // 4. 等待 API 成功後才導向文章列表
       navigate(adminPaths.posts.url);
     } catch (error) {
       console.error('儲存文章失敗:', error);
@@ -191,10 +194,12 @@ export default function PostPage({ type }: PostPageProps) {
         <MobileContent form={form} />
 
         <div className="flex justify-end gap-4 pt-6 border-t border-gray-200 dark:border-gray-800">
-          <Button variant="outline" onClick={onCancel}>
+          <Button variant="outline" onClick={onCancel} disabled={isSubmitting}>
             取消
           </Button>
-          <Button type="submit">儲存</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? '儲存中...' : '儲存'}
+          </Button>
         </div>
       </Form>
     </PageLayout>
