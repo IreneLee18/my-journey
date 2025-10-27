@@ -10,9 +10,10 @@ import type { Post } from '@/server/posts/getPosts/type';
 type MobilePostCardProps = {
   post: Post;
   onDelete: (id: string) => void;
+  isDeleting?: boolean;
 };
 
-export const MobilePostCard = ({ post, onDelete }: MobilePostCardProps) => {
+export const MobilePostCard = ({ post, onDelete, isDeleting = false }: MobilePostCardProps) => {
   const firstImage = post.images[0];
 
   return (
@@ -48,7 +49,8 @@ export const MobilePostCard = ({ post, onDelete }: MobilePostCardProps) => {
           <Link
             to={`${adminPaths.postEdit.url}/${post.id}`}
             className={cn(
-              buttonVariants({ variant: 'outline', className: 'flex-1' })
+              buttonVariants({ variant: 'outline', className: 'flex-1' }),
+              isDeleting && 'pointer-events-none opacity-50'
             )}
           >
             <PencilIcon className="w-4 h-4" />
@@ -57,6 +59,7 @@ export const MobilePostCard = ({ post, onDelete }: MobilePostCardProps) => {
           <Button
             variant="outline"
             className="flex-1"
+            disabled={isDeleting}
             onClick={() => {
               return onDelete(post.id);
             }}
@@ -80,6 +83,7 @@ type MobilePostListProps = {
   pageSize: number;
   onDelete: (id: string) => void;
   onPageChange: (page: number) => void;
+  isDeleting?: boolean;
 };
 
 export const MobilePostList = ({
@@ -91,6 +95,7 @@ export const MobilePostList = ({
   pageSize,
   onDelete,
   onPageChange,
+  isDeleting = false,
 }: MobilePostListProps) => {
   if (isLoading) {
     return (
@@ -125,7 +130,12 @@ export const MobilePostList = ({
 
       {/* 卡片列表 */}
       {posts.map((post) => (
-        <MobilePostCard key={post.id} post={post} onDelete={onDelete} />
+        <MobilePostCard 
+          key={post.id} 
+          post={post} 
+          onDelete={onDelete}
+          isDeleting={isDeleting}
+        />
       ))}
 
       {/* 分頁 */}

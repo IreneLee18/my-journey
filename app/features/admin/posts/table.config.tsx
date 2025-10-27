@@ -9,10 +9,12 @@ import type { Post } from '@/server/posts/getPosts/type';
 
 type ColumnProps = {
   onDelete: (id: string) => void;
+  isDeleting?: boolean;
 };
 
 export const getColumns = ({
   onDelete,
+  isDeleting = false,
 }: ColumnProps): ColumnDef<Post>[] => {
   return [
     {
@@ -65,7 +67,8 @@ export const getColumns = ({
             <Link
               to={`${adminPaths.postEdit.url}/${id}`}
               className={cn(
-                buttonVariants({ variant: 'outline', className: 'w-1/2' })
+                buttonVariants({ variant: 'outline', className: 'w-1/2' }),
+                isDeleting && 'pointer-events-none opacity-50'
               )}
             >
               <PencilIcon />
@@ -74,6 +77,7 @@ export const getColumns = ({
             <Button
               variant="outline"
               className="w-1/2"
+              disabled={isDeleting}
               onClick={() => {
                 return onDelete(id);
               }}
