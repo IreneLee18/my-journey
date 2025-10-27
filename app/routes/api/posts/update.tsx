@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { prisma } from '@/lib/prisma.server';
 import { updatePostSchema } from '@/server/posts/updatePost/type';
 import { deleteImage } from '@/lib/storage.server';
+import { format } from 'date-fns';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
@@ -97,10 +98,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     });
 
-    // 格式化回傳資料
     const formattedPost = {
       ...post,
-      publishDate: post.publishDate.toISOString().split('T')[0],
+      publishDate: format(post.publishDate, 'yyyy/MM/dd HH:mm'),
     };
 
     return data(

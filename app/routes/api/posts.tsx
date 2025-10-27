@@ -19,7 +19,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     const skip = (validatedQuery.page - 1) * validatedQuery.pageSize;
 
-    // 使用 Prisma 取得文章列表
+    // 使用 Prisma 取得文章列表（只取必要欄位，優化效能）
     const [posts, total] = await Promise.all([
       prisma.post.findMany({
         skip,
@@ -30,17 +30,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         select: {
           id: true,
           title: true,
-          content: true,
           publishDate: true,
+          // 只取第一張圖片，大幅減少資料傳輸量
           images: {
+            take: 1,
             orderBy: {
               order: 'asc',
             },
             select: {
-              id: true,
               url: true,
-              filename: true,
-              order: true,
             },
           },
         },
@@ -48,11 +46,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       prisma.post.count(),
     ]);
 
-    // 將 DateTime 轉換為 string
     const formattedPosts = posts.map((post) => {
       return {
         ...post,
-        publishDate: format(post.publishDate, 'yyyy/MM/dd'),
+        publishDate: format(post.publishDate, 'yyyy/MM/dd HH:mm'),
       };
     });
 

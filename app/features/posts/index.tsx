@@ -19,11 +19,6 @@ export default function PostsPage() {
     setSearchParams(newParams);
   };
 
-  const handlePageSizeChange = (newPageSize: number) => {
-    const newParams = { ...searchParams, size: newPageSize, page: 1 };
-    setSearchParams(newParams);
-  };
-
   if (isLoading) {
     return (
       <PageLayout title={t('nav.posts')} className="flex flex-col gap-8">
@@ -77,8 +72,6 @@ export default function PostsPage() {
             total={total}
             pageSize={searchParams.size}
             onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-            showSizeChanger
           />
         </>
       )}

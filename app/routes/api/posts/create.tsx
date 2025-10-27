@@ -3,6 +3,7 @@ import { data } from 'react-router';
 import { ZodError } from 'zod';
 import { prisma } from '@/lib/prisma.server';
 import { createPostSchema } from '@/server/posts/createPost/type';
+import { format } from 'date-fns';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
@@ -41,10 +42,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     });
 
-    // 格式化回傳資料
     const formattedPost = {
       ...post,
-      publishDate: post.publishDate.toISOString().split('T')[0],
+      publishDate: format(post.publishDate, 'yyyy/MM/dd HH:mm'),
     };
 
     return data(

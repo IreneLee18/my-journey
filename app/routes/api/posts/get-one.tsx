@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs } from 'react-router';
 import { data } from 'react-router';
 import { prisma } from '@/lib/prisma.server';
+import { format } from 'date-fns';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   try {
@@ -10,7 +11,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
       return data({ success: false, error: '缺少文章 ID' }, { status: 400 });
     }
 
-    // 查詢單篇文章
+    // 查詢單篇文章（只選擇必要欄位）
     const post = await prisma.post.findUnique({
       where: { id },
       select: {
@@ -18,9 +19,15 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         title: true,
         content: true,
         publishDate: true,
-        createdAt: true,
-        updatedAt: true,
         images: {
+          select: {
+            id: true,
+            url: true,
+            filename: true,
+            size: true,
+            mimeType: true,
+            order: true,
+          },
           orderBy: {
             order: 'asc',
           },
@@ -32,10 +39,9 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
       return data({ success: false, error: '找不到此文章' }, { status: 404 });
     }
 
-    // 格式化回傳資料
     const formattedPost = {
       ...post,
-      publishDate: post.publishDate.toISOString().split('T')[0],
+      publishDate: format(post.publishDate, 'yyyy/MM/dd HH:mm'),
     };
 
     return data(
