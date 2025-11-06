@@ -17,7 +17,7 @@ Thought this project you'll get to enjoy a glimpse of my life ❤️
 - Managed with Prisma as ORM for database management
 - Connected to Supabase as cloud database service (authentication & storage)
 - Enhanced with Husky and Commitizen as specification to standardize commit messages
-- Deployed on Vercel
+- Deployed on Linode
 
 ## Performance Optimization
 
